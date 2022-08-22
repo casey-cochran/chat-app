@@ -21,7 +21,17 @@ const validateUser = [
 ]
 
 router.post('/signup', validateUser, asyncHandler((req,res) => {
+    const {username, email, password} = req.body;
+    let user = await User.findOne({email});
+    if(user){
+        return res.status(400).json({msg: 'User Already Exists'})
+    }
 
+    user = new User({
+        username,
+        email,
+        password
+    })
 }))
 
 
