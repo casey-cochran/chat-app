@@ -1,9 +1,9 @@
+import 'dotenv/config';
 import express from 'express';
-import 'dotenv/config'
+import db from './config/db.js';
 import bodyParser from 'body-parser';
 
 const app = express();
-
 
 
 const PORT = process.env.PORT || 4000;
