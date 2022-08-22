@@ -3,9 +3,9 @@ import asyncHandler from 'express-async-handler';
 import { check } from "express-validator";
 import bcrypt from 'bcryptjs';
 import jwt from "jsonwebtoken";
-import handleValidationErrors from "../utils/validation";
+import handleValidationErrors from "../utils/validation.js";
 
-import User from "../models/User";
+import User from "../models/User.js";
 
 const router = express.Router();
 
@@ -20,7 +20,7 @@ const validateUser = [
     handleValidationErrors
 ]
 
-router.post('/signup', validateUser, asyncHandler((req,res) => {
+router.post('/signup', validateUser, asyncHandler(async(req,res) => {
     const {username, email, password} = req.body;
     let user = await User.findOne({email});
     if(user){
@@ -55,7 +55,7 @@ router.post('/signup', validateUser, asyncHandler((req,res) => {
                 token
             })
         }
-    ) 
+    )
 }))
 
 
