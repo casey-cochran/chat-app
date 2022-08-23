@@ -18,4 +18,9 @@ app.get('/', (req,res) => {
 
 app.use('/user', userRouter);
 
+app.use((err, req, res, next) => {
+    console.error(err.stack)
+    res.status(500).send('Something broke!')
+  })
+
 app.listen(PORT, (req,res) => console.log(`server started on ${PORT}`))

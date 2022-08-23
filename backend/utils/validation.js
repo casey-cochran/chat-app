@@ -1,4 +1,4 @@
-import validationResult from "express-validator";
+import {validationResult} from "express-validator";
 
 const handleValidationErrors = (req, res, next) => {
     const validationErrors = validationResult(req);
@@ -9,7 +9,7 @@ const handleValidationErrors = (req, res, next) => {
         const err = Error('Bad request.');
         err.errors = errors;
         err.status = 400;
-        err.titel = "Bad request.";
+        err.title = "Bad request.";
         next(err);
     }
     next();
