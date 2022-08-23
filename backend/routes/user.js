@@ -6,6 +6,7 @@ import jwt from "jsonwebtoken";
 import handleValidationErrors from "../utils/validation.js";
 
 import User from "../models/User.js";
+import requireAuth from "../utils/auth.js";
 
 const router = express.Router();
 
@@ -93,6 +94,11 @@ router.post('/login', validateLogin, asyncHandler(async(req, res) => {
             res.status(200).json({token})
         }
     )
+}))
+
+router.get('/me', requireAuth, asyncHandler(async(req,res) => {
+    const user = await User.findById(req.user.id);
+    res.json(user);
 }))
 
 export default router;
