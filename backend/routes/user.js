@@ -46,8 +46,8 @@ router.post('/signup', validateUser, asyncHandler(async(req,res) => {
 
     jwt.sign(
         payload,
-        "randomString", {
-            expiresIn: 10000
+        process.env.JWT_SECRET, {
+            expiresIn: parseInt(process.env.JWT_EXPIRES_IN, 10)
         },
         (err, token) => {
             if(err) throw err;
@@ -86,8 +86,8 @@ router.post('/login', validateLogin, asyncHandler(async(req, res) => {
 
     jwt.sign(
         payload,
-        "randomstring",
-        {expiresIn: 3600},
+        process.env.JWT_SECRET,
+        {expiresIn: process.env.JWT_EXPIRES_IN},
         (err, token) => {
             if(err) throw err;
             res.status(200).json({token})
