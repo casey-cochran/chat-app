@@ -1,6 +1,7 @@
 import 'dotenv/config';
 import express from 'express';
 import cookieParser from 'cookie-parser';
+import csurf from 'csurf';
 import db from './config/db.js';
 import bodyParser from 'body-parser';
 import userRouter from './routes/user.js'
@@ -10,15 +11,28 @@ const app = express();
 const PORT = process.env.PORT || 4000;
 
 app.use(cookieParser());
+app.use(express.urlencoded({extended: false}));
 app.use(express.json());
 app.use(bodyParser.json());
+app.use(csurf({cookie: true}));
 
 
-app.get('/', (req,res) => {
-    res.json({msg: "api working"})
+app.all('*', (req,res) => {
+    res.cookie('XSRF-TOKEN', req.csrfToken());
 })
 
+
 app.use('/user', userRouter);
+
+
+app.use(function (err, req, res, next) {
+    if (err.code !== 'EBADCSRFTOKEN') return next(err)
+
+    // handle CSRF token errors here
+    res.status(403)
+    res.send('form tampered with')
+  })
+
 
 app.use((err, req, res, next) => {
     console.error(err.stack)
