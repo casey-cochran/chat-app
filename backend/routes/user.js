@@ -41,22 +41,24 @@ router.post('/signup', validateUser, asyncHandler(async(req,res) => {
 
     const payload = {
         user: {
-            id: user.id
+            id: user._id
         }
     }
 
-    jwt.sign(
+    const token = jwt.sign(
         payload,
         process.env.JWT_SECRET, {
             expiresIn: parseInt(process.env.JWT_EXPIRES_IN, 10)
         },
-        (err, token) => {
-            if(err) throw err;
-            res.status(200).json({
-                token
-            })
-        }
-    )
+    );
+    res.cookie('token', token, {
+        maxAge: process.env.JWT_EXPIRES_IN * 1000,
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: process.env.NODE_ENV === 'production' && "Lax"
+    })
+    return res.json(user)
+
 }))
 
 const validateLogin = [
@@ -81,23 +83,26 @@ router.post('/login', validateLogin, asyncHandler(async(req, res) => {
 
     const payload = {
         user:{
-            id: user.id
+            id: user._id
         }
     }
 
-    jwt.sign(
+    const token = jwt.sign(
         payload,
         process.env.JWT_SECRET,
         {expiresIn: process.env.JWT_EXPIRES_IN},
-        (err, token) => {
-            if(err) throw err;
-            res.status(200).json({token})
-        }
-    )
+    );
+    res.cookie('token', token, {
+        maxAge: process.env.JWT_EXPIRES_IN * 1000,
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: process.env.NODE_ENV === 'production' && "Lax"
+    })
+    return res.json(user)
 }))
 
 router.get('/me', requireAuth, asyncHandler(async(req,res) => {
-    const user = await User.findById(req.user.id);
+    const user = await User.findById(req.user._id);
     res.json(user);
 }))
 

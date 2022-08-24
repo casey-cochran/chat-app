@@ -1,5 +1,6 @@
 import 'dotenv/config';
 import express from 'express';
+import cookieParser from 'cookie-parser';
 import db from './config/db.js';
 import bodyParser from 'body-parser';
 import userRouter from './routes/user.js'
@@ -8,6 +9,7 @@ const app = express();
 
 const PORT = process.env.PORT || 4000;
 
+app.use(cookieParser());
 app.use(express.json());
 app.use(bodyParser.json());
 
