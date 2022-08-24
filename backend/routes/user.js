@@ -101,6 +101,11 @@ router.post('/login', validateLogin, asyncHandler(async(req, res) => {
     return res.json(user)
 }))
 
+router.delete('/logout', requireAuth, asyncHandler(async(req,res) => {
+    res.clearCookie('token');
+    return res.json({msg: 'success'});
+}))
+
 router.get('/me', requireAuth, asyncHandler(async(req,res) => {
     const user = await User.findById(req.user._id);
     res.json(user);
