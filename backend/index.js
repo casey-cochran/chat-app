@@ -5,6 +5,7 @@ import csurf from 'csurf';
 import db from './config/db.js';
 import bodyParser from 'body-parser';
 import userRouter from './routes/user.js'
+import cors from 'cors'
 
 const app = express();
 
@@ -12,17 +13,22 @@ const PORT = process.env.PORT || 4000;
 
 app.use(cookieParser());
 app.use(express.urlencoded({extended: false}));
+app.use(cors());
 app.use(express.json());
 app.use(bodyParser.json());
-app.use(csurf({cookie: true}));
+// app.use(csurf({cookie: true}));
 
 
-app.all('*', (req,res) => {
-    res.cookie('XSRF-TOKEN', req.csrfToken());
-})
+// app.all('*', (req,res) => {
+//     res.cookie('XSRF-TOKEN', req.csrfToken());
+// })
 
 
 app.use('/user', userRouter);
+
+app.get('/test', (req,res) => {
+    res.json({msg: 'test successful'});
+})
 
 
 app.use(function (err, req, res, next) {
