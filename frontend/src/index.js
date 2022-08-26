@@ -6,9 +6,14 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import './index.css';
 import {BrowserRouter} from 'react-router-dom';
+import { restoreCSRF, csrfFetch } from './store/csrf';
 
 const container = document.getElementById('root');
 const root = createRoot(container);
+
+if(process.env.NODE_ENV !== 'production'){
+  restoreCSRF();
+}
 
 root.render(
     <Provider store={store}>
