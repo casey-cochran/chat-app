@@ -18,7 +18,7 @@ app.use(express.urlencoded({extended: false}));
 app.use(cors());
 app.use(express.json());
 app.use(bodyParser.json());
-// app.use(csurf({cookie: true}));
+app.use(csurf({cookie: true}));
 
 
 // app.all('*', (req,res) => {
@@ -27,6 +27,17 @@ app.use(bodyParser.json());
 
 
 app.use('/user', userRouter);
+app.get('/test', (req,res) => {
+    res.json({msg: 'test successful'});
+})
+
+if (process.env.NODE_ENV !== "production") {
+    router.get("/another", (req, res) => {
+        console.log('did this get hit')
+      res.cookie("XSRF-TOKEN", req.csrfToken());
+      res.status(201).json({msg: "sucess with not in produciton"});
+    });
+  }
 
 if(process.env.NODE_ENV === 'production'){
     router.get('/', (req,res) => {
@@ -38,10 +49,6 @@ if(process.env.NODE_ENV === 'production'){
 }
 
 router.use(express.static(path.resolve('../frontend/build')));
-
-app.get('/test', (req,res) => {
-    res.json({msg: 'test successful'});
-})
 
 
 app.use(function (err, req, res, next) {
