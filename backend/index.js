@@ -5,7 +5,9 @@ import csurf from 'csurf';
 import db from './config/db.js';
 import bodyParser from 'body-parser';
 import userRouter from './routes/user.js'
-import cors from 'cors'
+import cors from 'cors';
+import path from 'path';
+import router from './routes/user.js';
 
 const app = express();
 
@@ -25,6 +27,17 @@ app.use(bodyParser.json());
 
 
 app.use('/user', userRouter);
+
+if(process.env.NODE_ENV === 'production'){
+    router.get('/', (req,res) => {
+        res.cookie('XSRF-TOKEN', req.csrfToken());
+        return res.sendFile(
+            path.resolve(__dirname, '../frontend', 'build', 'index.html')
+        )
+    })
+}
+
+router.use(express.static(path.resolve('../frontend/build')));
 
 app.get('/test', (req,res) => {
     res.json({msg: 'test successful'});
