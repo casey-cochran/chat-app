@@ -11,6 +11,7 @@ import helmet from 'helmet'
 
 
 const app = express();
+app.use(cors({origin: true, credentials: true}));
 
 const PORT = process.env.PORT || 4000;
 
@@ -18,19 +19,16 @@ app.use(cookieParser());
 app.use(express.urlencoded({extended: false}));
 app.use(express.json());
 app.use(bodyParser.json());
-app.use(csurf({cookie: true}));
-app.use(cors());
 
-app.use(helmet({
-    contentSecurityPolicy: false
+app.use(helmet.crossOriginResourcePolicy({
+    policy: "cross-origin"
 }))
 
+app.use(csurf({cookie: true}));
 
 if (process.env.NODE_ENV !== "production") {
     app.get('/another/test', (req, res) => {
-    console.log('did this get hit')
-    //need to find out why res.cookie is not setting a cookie on my front end?
-      res.cookie("XSRF-TOKEN", req.csrfToken(), {domain: '.localhost:3000'});
+      res.cookie("XSRF-TOKEN", req.csrfToken());
       res.status(201).json({msg: "sucess with not in production"});
     });
   }
