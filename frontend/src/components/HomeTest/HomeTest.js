@@ -1,18 +1,17 @@
 import { useEffect } from "react";
-import { restoreCSRF } from "../../store/csrf";
+import { csrfFetch } from "../../store/csrf";
 
 
 const HomeTest = () => {
 
     const fetchTest = async() => {
-        const res = await fetch('http://localhost:5000/test')
+        const res = await csrfFetch('/another/test')
         const data = await res.json()
         console.log(data);
     }
 
     useEffect(() => {
-        // fetchTest();
-        restoreCSRF()
+        fetchTest();
     },[])
 
     return (
