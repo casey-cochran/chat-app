@@ -7,6 +7,7 @@ function App() {
     <div >
       <Routes>
         <Route path='/test' element={<HomeTest />} />
+        <Route path='/another/test' element={null} />
       </Routes>
     </div>
   );

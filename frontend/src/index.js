@@ -13,6 +13,7 @@ const root = createRoot(container);
 
 if(process.env.NODE_ENV !== 'production'){
   restoreCSRF();
+  window.csrfFetch = csrfFetch
 }
 
 root.render(

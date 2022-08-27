@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { restoreCSRF } from "../../store/csrf";
 
 
 const HomeTest = () => {
@@ -10,7 +11,8 @@ const HomeTest = () => {
     }
 
     useEffect(() => {
-        fetchTest();
+        // fetchTest();
+        restoreCSRF()
     },[])
 
     return (
