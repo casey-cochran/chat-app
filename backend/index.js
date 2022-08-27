@@ -7,7 +7,8 @@ import bodyParser from 'body-parser';
 import userRouter from './routes/user.js'
 import cors from 'cors';
 import path from 'path';
-import router from './routes/user.js';
+import helmet from 'helmet'
+
 
 const app = express();
 
@@ -15,32 +16,30 @@ const PORT = process.env.PORT || 4000;
 
 app.use(cookieParser());
 app.use(express.urlencoded({extended: false}));
-app.use(cors());
 app.use(express.json());
 app.use(bodyParser.json());
 app.use(csurf({cookie: true}));
+app.use(cors());
 
+app.use(helmet({
+    contentSecurityPolicy: false
+}))
 
-// app.all('*', (req,res) => {
-//     res.cookie('XSRF-TOKEN', req.csrfToken());
-// })
-
-
-app.use('/user', userRouter);
-app.get('/test', (req,res) => {
-    res.json({msg: 'test successful'});
-})
 
 if (process.env.NODE_ENV !== "production") {
-    router.get("/another", (req, res) => {
-        console.log('did this get hit')
-      res.cookie("XSRF-TOKEN", req.csrfToken());
-      res.status(201).json({msg: "sucess with not in produciton"});
+    app.get('/another/test', (req, res) => {
+    console.log('did this get hit')
+    //need to find out why res.cookie is not setting a cookie on my front end?
+      res.cookie("XSRF-TOKEN", req.csrfToken(), {domain: '.localhost:3000'});
+      res.status(201).json({msg: "sucess with not in production"});
     });
   }
 
+app.use('/user', userRouter);
+
+
 if(process.env.NODE_ENV === 'production'){
-    router.get('/', (req,res) => {
+    app.get('/', (req,res) => {
         res.cookie('XSRF-TOKEN', req.csrfToken());
         return res.sendFile(
             path.resolve(__dirname, '../frontend', 'build', 'index.html')
@@ -48,7 +47,7 @@ if(process.env.NODE_ENV === 'production'){
     })
 }
 
-router.use(express.static(path.resolve('../frontend/build')));
+app.use(express.static(path.resolve('../frontend/build')));
 
 
 app.use(function (err, req, res, next) {
