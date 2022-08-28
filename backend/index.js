@@ -8,9 +8,20 @@ import userRouter from './routes/user.js'
 import cors from 'cors';
 import path from 'path';
 import helmet from 'helmet'
+import http from 'http';
+import {Server} from 'socket.io'
 
 
 const app = express();
+const server = http.createServer(app);
+const io = new Server(server);
+
+
+io.on('connection', (socket) => {
+    console.log('a user connected')
+})
+
+
 app.use(cors({origin: true, credentials: true}));
 
 const PORT = process.env.PORT || 4000;
@@ -79,5 +90,5 @@ app.use((err, req, res, next) => {
     });
   });
 
-
-app.listen(PORT, (req,res) => console.log(`server started on ${PORT}`))
+server.listen(PORT, () => console.log('listening on server 5000'))
+// app.listen(PORT, (req,res) => console.log(`server started on ${PORT}`))
