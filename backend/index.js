@@ -13,16 +13,22 @@ import {Server} from 'socket.io'
 
 
 const app = express();
+app.use(cors({origin: true, credentials: true}));
 const server = http.createServer(app);
-const io = new Server(server);
+const io = new Server(server, {
+    cors: {
+        origin: 'http:localhost:3000',
+        methods: ['GET', 'POST']
+    }
+});
 
 
 io.on('connection', (socket) => {
+    socket.on('chat', (msg) => console.log(msg))
     console.log('a user connected')
 })
 
 
-app.use(cors({origin: true, credentials: true}));
 
 const PORT = process.env.PORT || 4000;
 
@@ -43,6 +49,8 @@ if (process.env.NODE_ENV !== "production") {
       res.status(201).json({msg: "sucess with not in production"});
     });
   }
+
+
 
 app.use('/user', userRouter);
 
