@@ -16,10 +16,10 @@ gain a better understanding of MongoDB as well as web sockets.
 # Database Design
 
 * Three separate collections
-Users, Chat_Room, Messages
-Users will have many Chat_rooms and many Messages
-A Chat_Room will have many Users and many Messages
-Messages will relate to a user as well as chat rooms that contain those messages
+* Users, Chat_Room, Messages
+* Users will have many Chat_rooms and many Messages
+* A Chat_Room will have many Users and many Messages
+* Messages will relate to a user as well as chat rooms that contain those messages
 
 # CSS Design
 * Css frameworks in consideration: bootstrap, trailwind, materialui
