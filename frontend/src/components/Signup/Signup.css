@@ -1,0 +1,19 @@
+.f-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.s-background {
+  /* Created with https://www.css-gradient.com */
+  background: #9cb1fc;
+  background: -webkit-linear-gradient(top left, #9cb1fc, #7ff9f9);
+  background: -moz-linear-gradient(top left, #9cb1fc, #7ff9f9);
+  background: linear-gradient(to bottom right, #9cb1fc, #7ff9f9);
+}
+
+.form {
+  padding: 100px 30px;
+  border-radius: 10px;
+  background-color: white;
+}
