@@ -5,19 +5,20 @@ let socket;
 const Socket = () => {
     const [messages, setMessages] = useState([]);
     const [chatInput, setChatInput] = useState('');
-    console.log(messages)
+
     const sendChat = (e) => {
         e.preventDefault();
         socket.emit('chat', {msg: chatInput});
         setChatInput('');
     }
 
+    //can add another usestate to track which room your in and query from the db
+    
     useEffect(() => {
        socket = io();
 
         socket.on('recieved', (chat) => {
-            // alert('data recieved')
-            setMessages(messages => [...messages, chat]);
+            setMessages([...messages, chat]);
         })
 
         return (() => socket.disconnect())
@@ -33,8 +34,10 @@ const Socket = () => {
                 <button type='submit'>Send</button>
             </form>
             <div>
-                {messages?.map((message, idx) => {
-                    <div key={idx}>{message.msg}</div>
+                {messages.map((message, idx) => {
+                    return (
+                        <div key={idx}>{message.msg}</div>
+                    )
                 })}
             </div>
         </div>

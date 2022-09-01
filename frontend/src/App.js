@@ -1,6 +1,6 @@
 import React from 'react';
 import { Route, Routes} from 'react-router-dom';
-import HomeTest from './components/HomeTest/Signup';
+import HomeTest from './components/Signup/Signup.js';
 import Socket from './components/Socket/Socket';
 
 function App() {
