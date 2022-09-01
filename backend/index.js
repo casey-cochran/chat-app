@@ -22,10 +22,14 @@ const io = new Server(server, {
     }
 });
 
-
+//socket connection here, can do more with rooms here
 io.on('connection', (socket) => {
     socket.on('chat', (msg) => socket.broadcast.emit('recieved', msg))
     console.log('a user connected')
+
+    socket.on('disconnect', () => {
+        io.emit("message", "A user has left the chat")
+    })
 })
 
 
@@ -43,6 +47,7 @@ app.use(helmet.crossOriginResourcePolicy({
 
 app.use(csurf({cookie: true}));
 
+//allow csurf tokens during development
 if (process.env.NODE_ENV !== "production") {
     app.get('/another/test', (req, res) => {
       res.cookie("XSRF-TOKEN", req.csrfToken());
@@ -54,7 +59,7 @@ if (process.env.NODE_ENV !== "production") {
 
 app.use('/user', userRouter);
 
-
+//set csrf tokens during production
 if(process.env.NODE_ENV === 'production'){
     app.get('/', (req,res) => {
         res.cookie('XSRF-TOKEN', req.csrfToken());

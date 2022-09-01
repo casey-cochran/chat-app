@@ -106,6 +106,7 @@ router.delete('/logout', requireAuth, asyncHandler(async(req,res) => {
     return res.json({msg: 'success'});
 }))
 
+//test route remove this later
 router.get('/all', asyncHandler(async(req,res) => {
     const allUsers = await User.find()
     res.json(allUsers);
