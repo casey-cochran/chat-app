@@ -24,9 +24,15 @@ const io = new Server(server, {
 
 //socket connection here, can do more with rooms here
 io.on('connection', (socket) => {
+    //When users join a room
+    socket.on('joinRoom', ({user, room}) => {
+        //TODO logic for join room
+    })
+
     socket.on('chat', (msg) => socket.broadcast.emit('recieved', msg))
     console.log('a user connected')
 
+    //send message when user disconnects
     socket.on('disconnect', () => {
         io.emit("message", "A user has left the chat")
     })
