@@ -21,11 +21,16 @@ const validateUser = [
     handleValidationErrors
 ]
 
-router.post('/signup', validateUser, asyncHandler(async(req,res) => {
+router.post('/signup', validateUser, asyncHandler(async(req,res, next) => {
     const {username, email, password} = req.body;
     let user = await User.findOne({email});
     if(user){
-        return res.status(400).json({msg: 'User Already Exists'})
+        //TODO Format error here for mongoose
+        const error = new Error()
+        error.errors = ['User Already Exists']
+        error.title = "Mongoose error"
+       return next(error)
+        // return res.status(400).json({msg: 'User Already Exists'})
     }
 
     user = new User({
