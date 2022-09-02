@@ -27,8 +27,9 @@ router.post('/signup', validateUser, asyncHandler(async(req,res, next) => {
     if(user){
         //TODO Format error here for mongoose
         const error = new Error()
-        error.errors = ['User Already Exists']
+        error.errors = {exists: 'User Already Exists'}
         error.title = "Mongoose error"
+        error.status = 400;
        return next(error)
         // return res.status(400).json({msg: 'User Already Exists'})
     }
