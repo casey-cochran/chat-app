@@ -12,12 +12,14 @@ import {
   FormFeedback,
 } from "reactstrap";
 import "./Signup.css";
+import { useNavigate } from "react-router";
 
 const Signup = () => {
   const [username, setUserName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -93,7 +95,7 @@ const Signup = () => {
           </FormGroup>
           <div className="d-flex align-items-center pb-3">
           <p className="mb-0">User already exists? Log in</p>
-          <Button color="link">here</Button>
+          <Button onClick={(() => navigate('/login'))} color="link">here</Button>
           </div>
           <Button color="primary">Submit</Button>
         </Form>
