@@ -9,37 +9,42 @@ import {
   Button,
   FormFeedback,
 } from "reactstrap";
-// import "./Signup.css";
 import { useNavigate } from "react-router";
+import {useDispatch, useSelector} from 'react-redux';
+import { addUser, logInUser } from "../../store/userSlice";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
-
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.user)
+    console.log(user)
   const handleSubmit = async (e) => {
     e.preventDefault();
     const user = {
       email,
       password,
     };
-    try {
-      const setUser = await csrfFetch("/user/login", {
-        method: "POST",
-        body: JSON.stringify(user),
-      });
-      const data = await setUser.json();
+      const test = await dispatch(logInUser(user))
+      if(test.payload.errors){
+          console.log(test.payload.errors, ' test data returned? ')
+        return setErrors(test.payload.errors)
+      }
+    //   const data = await setUser.json();
+    //   addUser(data)
       //TODO add this user data to a user slice of state
-      console.log(data, ' user data returned')
+    //   console.log(data, ' user data returned')
       setEmail("");
       setPassword("");
       setErrors([]);
       navigate('/');
-    } catch (e) {
-      const err = await e.json()
-      setErrors(err.errors)
-    }
+
+    //     console.log(e, ' eerrror returned')
+    //   const err = await e.json()
+    //   setErrors(err.errors)
+
   };
 
   return (
