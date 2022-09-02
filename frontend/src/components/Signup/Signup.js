@@ -6,8 +6,6 @@ import {
   Label,
   Input,
   Container,
-  Col,
-  Row,
   Button,
   FormFeedback,
 } from "reactstrap";
@@ -40,6 +38,7 @@ const Signup = () => {
       setEmail("");
       setPassword("");
       setErrors([]);
+      navigate('/');
     } catch (e) {
       const err = await e.json()
       setErrors(err.errors)
@@ -48,7 +47,7 @@ const Signup = () => {
 
   return (
     <div className="s-background">
-      <Container className="min-vh-100 f-center ">
+      <Container className="min-vh-100 d-flex justify-content-center align-items-center ">
         <Form className="col-sm-6 form" onSubmit={handleSubmit}>
           <h1 className="text-center">Sign Up Here</h1>
           <FormGroup>
