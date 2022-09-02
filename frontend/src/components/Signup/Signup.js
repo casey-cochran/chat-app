@@ -1,12 +1,23 @@
 import { useEffect, useState } from "react";
 import { csrfFetch } from "../../store/csrf";
-import { Form, FormGroup, Label, Input, Container, Col, Row, Button } from "reactstrap";
-import './Signup.css';
+import {
+  Form,
+  FormGroup,
+  Label,
+  Input,
+  Container,
+  Col,
+  Row,
+  Button,
+  FormFeedback,
+} from "reactstrap";
+import "./Signup.css";
 
 const Signup = () => {
   const [username, setUserName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [errors, setErrors] = useState({});
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -21,41 +32,72 @@ const Signup = () => {
         body: JSON.stringify(user),
       });
       const data = await setUser.json();
-      console.log(data);
+      //TODO add this user data to a user slice of state
+      console.log(data, ' user data returned')
+      setUserName("");
+      setEmail("");
+      setPassword("");
+      setErrors([]);
     } catch (e) {
-      console.log(e);
+      const err = await e.json()
+      setErrors(err.errors)
     }
   };
 
   return (
     <div className="s-background">
-    <Container className="min-vh-100 f-center ">
-      <Form className="col-sm-6 form"  onSubmit={handleSubmit}>
+      <Container className="min-vh-100 f-center ">
+        <Form className="col-sm-6 form" onSubmit={handleSubmit}>
           <h1 className="text-center">Sign Up Here</h1>
-        <FormGroup>
-        <div className="pb-2">
-          <Label>Username</Label>
-          <Input type="text" onChange={(e) => setUserName(e.target.value)} />
-        </div>
-        </FormGroup>
-        <FormGroup>
-        <div className="pb-2">
-          <Label>Email</Label>
-          <Input type="text" onChange={(e) => setEmail(e.target.value)} />
-        </div>
-        </FormGroup>
-        <FormGroup>
-        <div className="pb-2">
-          <Label>Password</Label>
-          <Input
-            type="password"
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </div>
-        </FormGroup>
-        <Button color='primary'>Submit</Button>
-      </Form>
-    </Container>
+          <FormGroup>
+            <div className="pb-2">
+              <Label>Username</Label>
+              <Input
+                type="text"
+                onChange={(e) => setUserName(e.target.value)}
+                value={username}
+                invalid={errors.username || errors.exists ? true : false}
+              />
+              <FormFeedback>
+                {errors.username || errors.exists}
+              </FormFeedback>
+            </div>
+          </FormGroup>
+          <FormGroup>
+            <div className="pb-2">
+              <Label>Email</Label>
+              <Input
+              type="text"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              invalid={errors.email ? true : false}
+              />
+              <FormFeedback>
+                {errors.email}
+              </FormFeedback>
+            </div>
+          </FormGroup>
+          <FormGroup>
+            <div className="pb-2">
+              <Label>Password</Label>
+              <Input
+                type="password"
+                onChange={(e) => setPassword(e.target.value)}
+                value={password}
+                invalid={errors.password ? true : false}
+              />
+              <FormFeedback>
+                {errors.password}
+              </FormFeedback>
+            </div>
+          </FormGroup>
+          <div className="d-flex align-items-center pb-3">
+          <p className="mb-0">User already exists? Log in</p>
+          <Button color="link">here</Button>
+          </div>
+          <Button color="primary">Submit</Button>
+        </Form>
+      </Container>
     </div>
   );
 };
