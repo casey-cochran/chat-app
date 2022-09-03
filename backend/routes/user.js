@@ -1,7 +1,6 @@
 import express from "express";
 import asyncHandler from 'express-async-handler';
 import { check } from "express-validator";
-import bcrypt from 'bcryptjs';
 import jwt from "jsonwebtoken";
 import handleValidationErrors from "../utils/validation.js";
 
