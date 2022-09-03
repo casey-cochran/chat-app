@@ -1,4 +1,5 @@
 import jwt from "jsonwebtoken";
+import User from '../models/User.js';
 
 
 const requireAuth = (req, res, next) => {
@@ -17,6 +18,27 @@ const requireAuth = (req, res, next) => {
     }
 };
 
+export const restoreUser = (req, res, next) => {
+    const {token} = req.cookies;
+
+    return jwt.verify(token, process.env.JWT_SECRET, null, async(err, jwtPayload) => {
+        if(err){
+            return next();
+        }
+
+        try {
+            const {user} = jwtPayload;
+            req.user = await User.findById(user.id);
+        } catch (e) {
+            res.clearCookie('token');
+            return next();
+        }
+
+        if(!req.user) res.clearCookie('token');
+
+        return next();
+    })
+}
 
 
 export default requireAuth;

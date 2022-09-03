@@ -1,12 +1,11 @@
 import express from "express";
 import asyncHandler from 'express-async-handler';
 import { check } from "express-validator";
-import bcrypt from 'bcryptjs';
 import jwt from "jsonwebtoken";
 import handleValidationErrors from "../utils/validation.js";
 
 import User from "../models/User.js";
-import requireAuth from "../utils/auth.js";
+import requireAuth, { restoreUser } from "../utils/auth.js";
 
 const router = express.Router();
 
@@ -21,23 +20,17 @@ const validateUser = [
     handleValidationErrors
 ]
 
-router.post('/signup', validateUser, asyncHandler(async(req,res) => {
+router.post('/signup', validateUser, asyncHandler(async(req,res, next) => {
     const {username, email, password} = req.body;
-    let user = await User.findOne({email});
-    if(user){
-        return res.status(400).json({msg: 'User Already Exists'})
+    const user = await User.signup(username, email, password);
+    if(user === 'Exists'){
+        //TODO Format error here for mongoose
+        const error = new Error()
+        error.errors = {exists: 'User Already Exists'}
+        error.title = "Mongoose error"
+        error.status = 400;
+       return next(error)
     }
-
-    user = new User({
-        username,
-        email,
-        password
-    })
-
-    const salt = await bcrypt.genSalt(10);
-    user.password = await bcrypt.hash(password, salt);
-
-    await user.save();
 
     const payload = {
         user: {
@@ -58,7 +51,6 @@ router.post('/signup', validateUser, asyncHandler(async(req,res) => {
         sameSite: process.env.NODE_ENV === 'production' && "Lax"
     })
     return res.json(user)
-
 }))
 
 const validateLogin = [
@@ -71,14 +63,9 @@ const validateLogin = [
 
 router.post('/login', validateLogin, asyncHandler(async(req, res) => {
     const {email, password} = req.body;
-    let user = await User.findOne({email});
+    let user = await User.login(email, password);
     if(!user){
         return res.status(400).json({msg: "User Does Not Exist"})
-    }
-
-    const userMatch = await bcrypt.compare(password, user.password);
-    if(!userMatch){
-        return res.status(400).json({msg: "Incorrect Password !"})
     }
 
     const payload = {
@@ -106,9 +93,23 @@ router.delete('/logout', requireAuth, asyncHandler(async(req,res) => {
     return res.json({msg: 'success'});
 }))
 
-router.get('/me', requireAuth, asyncHandler(async(req,res) => {
-    const user = await User.findById(req.user._id);
-    res.json(user);
+//restore a session user
+router.get('/', restoreUser, (req,res) => {
+    const {user} = req;
+    if(user) {
+        return res.json({
+            user
+        })
+    }else{
+        return res.json([]);
+    }
+})
+
+//test route remove this later
+router.get('/all', asyncHandler(async(req,res) => {
+    const allUsers = await User.find()
+    res.json(allUsers);
 }))
+
 
 export default router;
