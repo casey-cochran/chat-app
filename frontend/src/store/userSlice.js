@@ -8,20 +8,21 @@ const initialState = {
 };
 
 export const logInUser = createAsyncThunk(
-  'users/logInUser',
-  async(user) => {
-    try{
-    const response = await csrfFetch("/user/login", {
-      method: "POST",
-      body: JSON.stringify(user),
-    });
-    const data = await response.json();
-  }catch(e){
-    const err = await e.json();
-    return err;
+  "users/logInUser",
+  async (user, { rejectWithValue }) => {
+    try {
+      const response = await csrfFetch("/user/login", {
+        method: "POST",
+        body: JSON.stringify(user),
+      });
+      const data = await response.json();
+      return data;
+    } catch (e) {
+      const err = await e.json();
+      return rejectWithValue(err);
+    }
   }
-  }
-)
+);
 
 const userSlice = createSlice({
   name: "user",
@@ -34,20 +35,21 @@ const userSlice = createSlice({
       state.user = null;
     },
   },
-  extraReducers:{
-    [logInUser.pending]: (state,action) => {
-      state.status = 'loading'
-  },
-    [logInUser.fulfilled]: (state,action) => {
-      state.status = 'success';
+  extraReducers: {
+    [logInUser.pending]: (state, action) => {
+      state.status = "loading";
+    },
+    [logInUser.fulfilled]: (state, action) => {
+      state.status = "success";
+      state.error = null;
       state.user = action.payload;
+    },
+    [logInUser.rejected]: (state, action) => {
+      state.status = "failed";
+      state.error = action.error;
+    },
   },
-    [logInUser.rejected]: (state,action) => {
-      state.status = 'failed';
-      state.error = action.error
-  }
-  }
 });
 
-export const {addUser, logout} = userSlice.actions;
+export const { addUser, logout } = userSlice.actions;
 export default userSlice.reducer;
