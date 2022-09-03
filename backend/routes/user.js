@@ -6,7 +6,7 @@ import jwt from "jsonwebtoken";
 import handleValidationErrors from "../utils/validation.js";
 
 import User from "../models/User.js";
-import requireAuth from "../utils/auth.js";
+import requireAuth, { restoreUser } from "../utils/auth.js";
 
 const router = express.Router();
 
@@ -111,6 +111,18 @@ router.delete('/logout', requireAuth, asyncHandler(async(req,res) => {
     res.clearCookie('token');
     return res.json({msg: 'success'});
 }))
+
+//restore a session user
+router.get('/', restoreUser, (req,res) => {
+    const {user} = req;
+    if(user) {
+        return res.json({
+            user
+        })
+    }else{
+        return res.json([]);
+    }
+})
 
 //test route remove this later
 router.get('/all', asyncHandler(async(req,res) => {
