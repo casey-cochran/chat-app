@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { csrfFetch } from "../../store/csrf";
 import {
   Form,
@@ -11,6 +11,8 @@ import {
 } from "reactstrap";
 import "./Signup.css";
 import { useNavigate } from "react-router";
+import { signUpUser, SignUpUser } from "../../store/userSlice";
+import { useDispatch } from "react-redux";
 
 const Signup = () => {
   const [username, setUserName] = useState("");
@@ -18,6 +20,7 @@ const Signup = () => {
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -26,23 +29,16 @@ const Signup = () => {
       email,
       password,
     };
-    try {
-      const setUser = await csrfFetch("/user/signup", {
-        method: "POST",
-        body: JSON.stringify(user),
-      });
-      const data = await setUser.json();
-      //TODO add this user data to a user slice of state
-      console.log(data, ' user data returned')
+
+      const signInUser = await dispatch(signUpUser(user))
+      if(signInUser.error){
+        return setErrors(signInUser.payload.errors);
+      }
       setUserName("");
       setEmail("");
       setPassword("");
       setErrors([]);
       navigate('/');
-    } catch (e) {
-      const err = await e.json()
-      setErrors(err.errors)
-    }
   };
 
   return (

@@ -11,7 +11,7 @@ import {
 } from "reactstrap";
 import { useNavigate } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
-import { addUser, logInUser } from "../../store/userSlice";
+import { logInUser } from "../../store/userSlice";
 
 const Login = () => {
   const [email, setEmail] = useState("");
