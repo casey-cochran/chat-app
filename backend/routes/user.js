@@ -77,14 +77,9 @@ const validateLogin = [
 
 router.post('/login', validateLogin, asyncHandler(async(req, res) => {
     const {email, password} = req.body;
-    let user = await User.findOne({email});
+    let user = await User.logIn(email, password);
     if(!user){
         return res.status(400).json({msg: "User Does Not Exist"})
-    }
-
-    const userMatch = await bcrypt.compare(password, user.password);
-    if(!userMatch){
-        return res.status(400).json({msg: "Incorrect Password !"})
     }
 
     const payload = {
