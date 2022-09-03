@@ -24,6 +24,15 @@ export const logInUser = createAsyncThunk(
   }
 );
 
+export const restoreUser = createAsyncThunk(
+  'user/restoreUser',
+  async() => {
+    const res = await csrfFetch('/user');
+    const data = await res.json();
+    console.log(data, ' user restored?')
+  }
+)
+
 const userSlice = createSlice({
   name: "user",
   initialState,
