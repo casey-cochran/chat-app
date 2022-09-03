@@ -25,9 +25,10 @@ export const restoreUser = (req, res, next) => {
         if(err){
             return next();
         }
+
         try {
-            const {id} = jwtPayload.data;
-            req.user = await User.findById(id);
+            const {user} = jwtPayload;
+            req.user = await User.findById(user.id);
         } catch (e) {
             res.clearCookie('token');
             return next();
