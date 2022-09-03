@@ -23,27 +23,15 @@ const validateUser = [
 
 router.post('/signup', validateUser, asyncHandler(async(req,res, next) => {
     const {username, email, password} = req.body;
-    let user = await User.findOne({email});
-    if(user){
+    const user = await User.signup(username, email, password);
+    if(user === 'Exists'){
         //TODO Format error here for mongoose
         const error = new Error()
         error.errors = {exists: 'User Already Exists'}
         error.title = "Mongoose error"
         error.status = 400;
        return next(error)
-        // return res.status(400).json({msg: 'User Already Exists'})
     }
-
-    user = new User({
-        username,
-        email,
-        password
-    })
-
-    const salt = await bcrypt.genSalt(10);
-    user.password = await bcrypt.hash(password, salt);
-
-    await user.save();
 
     const payload = {
         user: {
@@ -64,7 +52,6 @@ router.post('/signup', validateUser, asyncHandler(async(req,res, next) => {
         sameSite: process.env.NODE_ENV === 'production' && "Lax"
     })
     return res.json(user)
-
 }))
 
 const validateLogin = [
@@ -77,7 +64,7 @@ const validateLogin = [
 
 router.post('/login', validateLogin, asyncHandler(async(req, res) => {
     const {email, password} = req.body;
-    let user = await User.logIn(email, password);
+    let user = await User.login(email, password);
     if(!user){
         return res.status(400).json({msg: "User Does Not Exist"})
     }

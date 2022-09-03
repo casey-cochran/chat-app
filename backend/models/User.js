@@ -27,7 +27,7 @@ const UserSchema = mongoose.Schema({
         }
     },
     statics:{
-        async logIn(email, password){
+        async login(email, password){
             const user = await this.findOne({email})
             if(user){
                 const validatedPassword = user.comparePassword(password)
@@ -37,12 +37,29 @@ const UserSchema = mongoose.Schema({
                 }
             }
         },
+        async signup(username, email, password){
+            const user = await this.findOne({email});
+            if(user){
+                return 'Exists';
+            }
+            const newUser = new this({
+                username, email, password
+            })
+            await newUser.save();
+            newUser.password = undefined;
+            return newUser;
+        }
     }
 })
 
-// UserSchema.methods.comparePassword = async function(password){
-//     const validated = await bcrypt.compare(password, this.password);
-//     return validated
-// }
+UserSchema.pre("save", async function(next){
+    // const user = this;
+    if(!this.isModified('password')){
+        next();
+    }
+        const salt = await bcrypt.genSalt(10);
+        this.password = await bcrypt.hash(this.password, salt);
+        next();
+})
 
 export default mongoose.model('User', UserSchema);
