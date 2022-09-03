@@ -39,7 +39,7 @@ export const signUpUser = createAsyncThunk(
       return rejectWithValue(err);
     }
   })
-)
+
 
 export const restoreUser = createAsyncThunk(
   'user/restoreUser',
