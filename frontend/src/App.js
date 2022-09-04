@@ -18,15 +18,15 @@ function App() {
   return (
     <div >
       <Navigation />
-      {user.user &&
+
       <Routes>
-        <Route path='/' element={<Home />} />
+      {user.user && <Route path='/' element={<Home />} /> }
         <Route path='/signup' element={<Signup />} />
         <Route path='/login' element={<Login />} />
         <Route path='/another/test' element={null} />
         <Route path='/socket' element={<Socket />} />
       </Routes>
-}
+
     </div>
   );
 }
