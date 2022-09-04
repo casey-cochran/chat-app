@@ -4,6 +4,7 @@ let socket;
 
 const Socket = () => {
     const [messages, setMessages] = useState([]);
+    const [myMessages, setMyMessages] = useState([]);
     const [chatInput, setChatInput] = useState('');
 
     const sendChat = (e) => {
@@ -13,7 +14,7 @@ const Socket = () => {
     }
 
     //can add another usestate to track which room your in and query from the db
-    
+
     useEffect(() => {
        socket = io();
 
@@ -25,7 +26,7 @@ const Socket = () => {
     }, [socket])
 
     return (
-        <div>
+        <div className='flex-grow-1'>
             <form onSubmit={sendChat}>
                 <input
                     value={chatInput}
