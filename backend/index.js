@@ -22,6 +22,12 @@ const io = new Server(server, {
     }
 });
 
+let users = [];
+console.log(users);
+const addUser = (userId, socketId) => {
+    //if user not already in users array, add user
+    !users.some(user => user.userId === userId) && users.push({userId, socketId});
+}
 //socket connection here, can do more with rooms here
 io.on('connection', (socket) => {
     //When users join a room
@@ -31,6 +37,12 @@ io.on('connection', (socket) => {
 
     socket.on('chat', (msg) => socket.broadcast.emit('recieved', msg))
     console.log('a user connected')
+
+    socket.on('addUser', (userId) => {
+        addUser(userId, socket.id);
+        io.emit("getUsers", users);
+        console.log(userId, users)
+    })
 
     //send message when user disconnects
     socket.on('disconnect', () => {
