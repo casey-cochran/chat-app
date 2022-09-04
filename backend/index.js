@@ -28,6 +28,14 @@ const addUser = (userId, socketId) => {
     //if user not already in users array, add user
     !users.some(user => user.userId === userId) && users.push({userId, socketId});
 }
+
+const removeUser = (socketId) => {
+    users = users.filter((user => user.socketId !== socketId));
+}
+
+const getUser = userId => {
+    return users.find((user) => user.id === userId);
+}
 //socket connection here, can do more with rooms here
 io.on('connection', (socket) => {
     //When users join a room
@@ -37,7 +45,15 @@ io.on('connection', (socket) => {
 
     socket.on('chat', (msg) => socket.broadcast.emit('recieved', msg))
     console.log('a user connected')
+    //send and get message
+    socket.on('sendMessage', ({senderId, receiverId, text}) => {
+        const user = getUser(senderId);
+        io.to(user.socketId).emit("getMessage", {
+            senderId, text,
+        })
+    })
 
+    //when a user connects add user to chat
     socket.on('addUser', (userId) => {
         addUser(userId, socket.id);
         io.emit("getUsers", users);
@@ -46,7 +62,9 @@ io.on('connection', (socket) => {
 
     //send message when user disconnects
     socket.on('disconnect', () => {
-        io.emit("message", "A user has left the chat")
+        console.log('A user disconencted')
+        removeUser(socket.id)
+        io.emit('getUsers', users);
     })
 })
 
