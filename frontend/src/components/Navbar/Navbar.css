@@ -1,5 +1,5 @@
-.navbar-expand-lg .navbar-collapse {
-    display: flex!important;
-    justify-content: space-around;
-    flex-basis: auto;
-    }
+.nav-item > a{
+    color: white;
+    font-weight: 400;
+    font-size: 20px;
+}

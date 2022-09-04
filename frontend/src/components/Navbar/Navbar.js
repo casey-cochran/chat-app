@@ -7,14 +7,14 @@ import {
   DropdownItem,
   Nav,
 } from "reactstrap";
-// import './Navbar.css';
+import './Navbar.css';
 
 const Navigation = () => {
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-primary py-5">
-      <div className="container-fluid ">
-        <a className="navbar-brand" href="#">
-          Navbar
+      <div className="container-fluid d-flex flex-row-reverse">
+        <a className="navbar-brand text-white w-25 text-center" href="#">
+          Chat-App
         </a>
         <button
           className="navbar-toggler"
@@ -27,18 +27,18 @@ const Navigation = () => {
         >
           <span className="navbar-toggler-icon"></span>
         </button>
-        <div className="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul className="navbar-nav me-auto mb-2 mb-lg-0 d-flex justify-content-start w-100">
+        <div className="collapse navbar-collapse " id="navbarSupportedContent">
+          <ul className="navbar-nav me-auto mb-2 mb-lg-0 d-flex justify-content-end w-25">
             <li className="nav-item ">
-              <a className="nav-link active" aria-current="page" href="#">
+              <a className="nav-link active text-white" aria-current="page" href="#">
                 Home
               </a>
             </li>
-            <li className="nav-item">
+            {/* <li className="nav-item">
               <a className="nav-link" href="#">
                 Link
               </a>
-            </li>
+            </li> */}
             <li className="nav-item dropdown">
               <a
                 className="nav-link dropdown-toggle"
@@ -48,7 +48,7 @@ const Navigation = () => {
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
               >
-                Dropdown
+                Menu
               </a>
               <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
                 <li>
@@ -68,9 +68,6 @@ const Navigation = () => {
                   </a>
                 </li>
               </ul>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link disabled">Disabled</a>
             </li>
           </ul>
           {/* <form className="d-flex">
