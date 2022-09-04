@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Route, Routes} from 'react-router-dom';
 import Home from './components/Home/Home.js';
 import Login from './components/Login/Login.js';
@@ -10,7 +10,7 @@ import Navigation from './components/Navbar/Navbar.js';
 
 function App() {
   const dispatch = useDispatch();
-
+  const user = useSelector((state) => state.user)
   useEffect(() => {
     dispatch(restoreUser())
   }, []);
@@ -18,6 +18,7 @@ function App() {
   return (
     <div >
       <Navigation />
+      {user.user &&
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/signup' element={<Signup />} />
@@ -25,6 +26,7 @@ function App() {
         <Route path='/another/test' element={null} />
         <Route path='/socket' element={<Socket />} />
       </Routes>
+}
     </div>
   );
 }

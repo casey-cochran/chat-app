@@ -92,7 +92,7 @@ const userSlice = createSlice({
     [restoreUser.fulfilled]: (state, action) => {
       state.status = "success";
       state.error = null;
-      state.user = action.payload;
+      state.user = action.payload.user;
     },
     [restoreUser.rejected]: (state, action) => {
       state.status = "failed";

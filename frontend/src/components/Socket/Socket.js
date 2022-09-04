@@ -1,28 +1,38 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { useSelector } from 'react-redux';
 import {io} from 'socket.io-client';
-let socket;
 
 const Socket = () => {
+    const user = useSelector((state) => state.user?.user?._id)
     const [messages, setMessages] = useState([]);
-    const [myMessages, setMyMessages] = useState([]);
+    const [newMessage, setNewMessage] = useState('');
+    const [currentChat, setCurrentChat] = useState(null);
+    const [conversations, setConversations] = useState([]);
     const [chatInput, setChatInput] = useState('');
+    let socket = useRef(io())
 
     const sendChat = (e) => {
         e.preventDefault();
-        socket.emit('chat', {msg: chatInput});
+        socket.current.emit('chat', {msg: chatInput});
         setChatInput('');
     }
 
     //can add another usestate to track which room your in and query from the db
 
     useEffect(() => {
-       socket = io();
+        //Grab user id from redux state, add it to dependency
+        socket.current.emit('addUser', user)
+        socket.current.on("getUsers", users => {
+            console.log(users)
+        })
+    },[])
 
-        socket.on('recieved', (chat) => {
+    useEffect(() => {
+        socket.current.on('recieved', (chat) => {
             setMessages([...messages, chat]);
         })
 
-        return (() => socket.disconnect())
+        return (() => socket.current.disconnect())
     }, [socket])
 
     return (
