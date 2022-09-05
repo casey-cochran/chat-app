@@ -1,33 +1,35 @@
 import { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import {io} from 'socket.io-client';
+import { csrfFetch } from '../../store/csrf';
 
-const Socket = () => {
+const Socket = ({conversations}) => {
     const user = useSelector((state) => state.user?.user?._id)
     const [messages, setMessages] = useState([]);
     const [newMessage, setNewMessage] = useState('');
     const [currentChat, setCurrentChat] = useState(null);
-    const [conversations, setConversations] = useState([]);
+    // const [conve, setConversations] = useState([]);
+    
     const [chatInput, setChatInput] = useState('');
     let socket = useRef(io())
 
-    const receiverId = currentChat.members.find(member => member !== user)
+    // const receiverId = currentChat.members.find(member => member !== user)
 
     const sendChat = (e) => {
         e.preventDefault();
         socket.current.emit('sendMessage', {
             senderId: user,
-            receiverId,
+            // receiverId,
             text: newMessage
         });
         setChatInput('');
     }
 
-    useEffect(() => {
-        socket.current.on('getMessage', data => {
+    // useEffect(() => {
+    //     socket.current.on('getMessage', data => {
 
-        })
-    })
+    //     })
+    // },[])
 
     //can add another usestate to track which room your in and query from the db
 
@@ -46,9 +48,16 @@ const Socket = () => {
         return (() => socket.current.disconnect())
     }, [socket])
 
-    useEffect(() => {
-        //fetch conversations here
-    },[])
+    // useEffect(() => {
+    //     //fetch conversations here
+    //     const getUserConversations = async() => {
+    //         const conversation = await csrfFetch(`/conversation/${user}`)
+    //         const response = await conversation.json();
+    //         const {rooms} = response;
+    //         setCurrentChat(rooms);
+    //     }
+    //     getUserConversations();
+    // },[])
 
     return (
         <div className='flex-grow-1'>
