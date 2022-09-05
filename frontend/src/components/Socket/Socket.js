@@ -3,13 +3,13 @@ import { useSelector } from 'react-redux';
 import {io} from 'socket.io-client';
 import { csrfFetch } from '../../store/csrf';
 
-const Socket = ({conversations}) => {
+const Socket = ({currentConvo}) => {
     const user = useSelector((state) => state.user?.user?._id)
     const [messages, setMessages] = useState([]);
     const [newMessage, setNewMessage] = useState('');
     const [currentChat, setCurrentChat] = useState(null);
     // const [conve, setConversations] = useState([]);
-    
+
     const [chatInput, setChatInput] = useState('');
     let socket = useRef(io())
 
@@ -47,17 +47,6 @@ const Socket = ({conversations}) => {
         })
         return (() => socket.current.disconnect())
     }, [socket])
-
-    // useEffect(() => {
-    //     //fetch conversations here
-    //     const getUserConversations = async() => {
-    //         const conversation = await csrfFetch(`/conversation/${user}`)
-    //         const response = await conversation.json();
-    //         const {rooms} = response;
-    //         setCurrentChat(rooms);
-    //     }
-    //     getUserConversations();
-    // },[])
 
     return (
         <div className='flex-grow-1'>

@@ -8,25 +8,35 @@ const Home = () => {
     //change user to just user and key into id
     //that way can get user name to display all his convos
     //map convos and set current the ony clicked and show that ones chat
-    const user = useSelector((state) => state.user?.user?._id)
+    const user = useSelector((state) => state.user?.user)
     const [conversations, setConversations] = useState([]);
     const [currentConvo, setCurrentConvo] = useState(null);
 
     useEffect(() => {
         //fetch conversations here
         const getUserConversations = async() => {
-            const conversation = await csrfFetch(`/conversation/${user}`)
+            const conversation = await csrfFetch(`/conversation/${user._id}`)
             const response = await conversation.json();
             const {rooms} = response;
             setConversations([...conversations, ...rooms])
         }
         getUserConversations();
-    },[])
+    },[]);
+
+    const setCurrConvo = (id) => {
+      return  setCurrentConvo(id)
+    }
 
     return (
         <div className="d-flex w-100 min-vh-100">
-            <div className="w-25">hello from home</div>
-            <Socket conversations={conversations}/>
+            <div className="w-25">
+                {conversations?.map((convo, idx) => {
+                    return (
+                        <div onClick={() => setCurrConvo(convo._id)} key={idx}>{convo._id + convo.members}</div>
+                    )
+                })}
+            </div>
+            <Socket currentConvo={currentConvo}/>
             <div className="w-25">
                 online users here
             </div>
