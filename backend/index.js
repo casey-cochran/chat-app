@@ -11,6 +11,7 @@ import helmet from 'helmet'
 import http from 'http';
 import {Server} from 'socket.io'
 import conversationsRouter from './routes/conversations.js';
+import messageRouter from './routes/message.js';
 
 const app = express();
 app.use(cors({origin: true, credentials: true}));
@@ -95,6 +96,7 @@ if (process.env.NODE_ENV !== "production") {
 
 app.use('/user', userRouter);
 app.use('/conversation', conversationsRouter);
+app.use('/message', messageRouter);
 
 //set csrf tokens during production
 if(process.env.NODE_ENV === 'production'){
