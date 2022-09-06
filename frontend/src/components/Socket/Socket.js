@@ -3,12 +3,12 @@ import { useSelector } from 'react-redux';
 import {io} from 'socket.io-client';
 import { csrfFetch } from '../../store/csrf';
 
-const Socket = ({currentConvo}) => {
-    const user = useSelector((state) => state.user?.user?._id)
+const Socket = ({currentConvoId}) => {
+    const user = useSelector((state) => state.user?.user)
     const [messages, setMessages] = useState([]);
     const [newMessage, setNewMessage] = useState('');
     const [currentChat, setCurrentChat] = useState(null);
-    // const [conve, setConversations] = useState([]);
+    const [convoMessages, setConvoMessages] = useState([]);
 
     const [chatInput, setChatInput] = useState('');
     let socket = useRef(io())
@@ -18,7 +18,7 @@ const Socket = ({currentConvo}) => {
     const sendChat = (e) => {
         e.preventDefault();
         socket.current.emit('sendMessage', {
-            senderId: user,
+            senderId: user._id,
             // receiverId,
             text: newMessage
         });
@@ -31,11 +31,18 @@ const Socket = ({currentConvo}) => {
     //     })
     // },[])
 
-    //can add another usestate to track which room your in and query from the db
+    useEffect(() => {
+        const getMessages = async(currentConvoId) => {
+            const response = await csrfFetch(`/message/${currentConvoId}`);
+            const data = await response.json();
+            setConvoMessages([...convoMessages, ...data.messages]);
+        }
+        getMessages(currentConvoId);
+    },[currentConvoId])
 
     useEffect(() => {
         //Grab user id from redux state, add it to dependency
-        socket.current.emit('addUser', user)
+        socket.current.emit('addUser', user._id)
         socket.current.on("getUsers", users => {
             console.log(users)
         })
@@ -48,8 +55,14 @@ const Socket = ({currentConvo}) => {
         return (() => socket.current.disconnect())
     }, [socket])
 
+        console.log(convoMessages)
     return (
         <div className='flex-grow-1'>
+            {convoMessages?.map((message, i) => {
+                return (
+                <div key={i}>{message.text}</div>
+                )
+            })}
             <form onSubmit={sendChat}>
                 <input
                     value={chatInput}

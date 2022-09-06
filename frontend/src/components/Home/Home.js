@@ -10,7 +10,7 @@ const Home = () => {
     //map convos and set current the ony clicked and show that ones chat
     const user = useSelector((state) => state.user?.user)
     const [conversations, setConversations] = useState([]);
-    const [currentConvo, setCurrentConvo] = useState(null);
+    const [currentConvoId, setCurrentConvoId] = useState(null);
 
     useEffect(() => {
         //fetch conversations here
@@ -24,7 +24,7 @@ const Home = () => {
     },[]);
 
     const setCurrConvo = (id) => {
-      return  setCurrentConvo(id)
+      return setCurrentConvoId(id)
     }
 
     return (
@@ -36,7 +36,7 @@ const Home = () => {
                     )
                 })}
             </div>
-            <Socket currentConvo={currentConvo}/>
+            <Socket currentConvoId={currentConvoId}/>
             <div className="w-25">
                 online users here
             </div>
