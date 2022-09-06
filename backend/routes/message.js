@@ -21,8 +21,8 @@ router.post('/', asyncHandler(async(req,res) => {
 
 //Get all messages based on conversationId, add Auth
 router.get('/:conversationId', asyncHandler(async(req,res) => {
-    const conversationId = req.params.conversatoinId;
-    const messages = await Message.find({conversationId});
+    const conversationId = req.params.conversationId;
+    const messages = await Message.find({chatRoomId: conversationId});
 
     res.json({messages})
 }))
