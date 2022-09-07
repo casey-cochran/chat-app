@@ -10,6 +10,7 @@ const Home = () => {
     //that way can get user name to display all his convos
     //map convos and set current the ony clicked and show that ones chat
     const user = useSelector((state) => state.user?.user)
+    const conversation = useSelector((state) => state.conversation?.conversation)
     const [conversations, setConversations] = useState([]);
     const [currentConvo, setCurrentConvo] = useState(null);
 
@@ -25,22 +26,19 @@ const Home = () => {
         getUserConversations();
     },[]);
 
-    const setCurrConvo = (convo) => {
-      return setCurrentConvo(convo)
-    }
-    console.log(currentConvo, ' currr convo should be aID')
+
     return (
         <div className="d-flex w-100 min-vh-100">
             <div className="w-25">
                 {conversations?.map((convo, idx) => {
                     return (
-                        <div onClick={() => setCurrConvo(convo._id)} key={idx}>
+                        <div key={idx}>
                         <Conversation convo={convo} userId={user.id} />
                         </div>
                     )
                 })}
             </div>
-            <Socket currentConvo={currentConvo}/>
+            <Socket currentConvo={conversation}/>
             <div className="w-25">
                 online users here
             </div>
