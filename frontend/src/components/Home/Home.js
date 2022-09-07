@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Socket from "../Socket/Socket";
 import { csrfFetch } from '../../store/csrf';
 import { useSelector } from 'react-redux';
+import Conversation from "../Conversation/Conversation";
 
 
 const Home = () => {
@@ -27,14 +28,15 @@ const Home = () => {
     const setCurrConvo = (convo) => {
       return setCurrentConvo(convo)
     }
-    // console.log(currentConvo, ' currr convo should be array')
+    console.log(currentConvo, ' currr convo should be aID')
     return (
         <div className="d-flex w-100 min-vh-100">
             <div className="w-25">
                 {conversations?.map((convo, idx) => {
                     return (
-                        //map conversations here and query other user within this convo to get his username
-                        <div className="w-25" onClick={() => setCurrConvo(convo)} key={idx}>{convo._id}, {convo.members}</div>
+                        <div onClick={() => setCurrConvo(convo._id)} key={idx}>
+                        <Conversation convo={convo} userId={user.id} />
+                        </div>
                     )
                 })}
             </div>
