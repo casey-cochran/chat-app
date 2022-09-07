@@ -1,6 +1,7 @@
 import express from 'express';
 import asyncHandler from 'express-async-handler';
 import ChatRoom from '../models/ChatRoom.js';
+import User from '../models/User.js';
 import requireAuth from '../utils/auth.js';
 
 const router = express.Router();
