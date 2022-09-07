@@ -23,7 +23,7 @@ const Socket = ({currentConvo}) => {
             receiverId,
             text: newMessage
         });
-        setChatInput('');
+        setNewMessage('');
     }
 
     useEffect(() => {
@@ -46,7 +46,7 @@ const Socket = ({currentConvo}) => {
         // arrivalMessage && currentConvo?.members.includes(arrivalMessage.sender) &&
         arrivalMessage && currentConvo?.members.includes(arrivalMessage.sender) &&
         arrivalMessage &&
-        setMessages(arrivalMessage.text)
+        // setMessages(arrivalMessage.text)
         setMessages((prev) => [...prev, arrivalMessage?.text])
         console.log(messages)
     }, [arrivalMessage, currentChat])

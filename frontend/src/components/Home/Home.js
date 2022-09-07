@@ -33,7 +33,8 @@ const Home = () => {
             <div className="w-25">
                 {conversations?.map((convo, idx) => {
                     return (
-                        <div onClick={() => setCurrConvo(convo)} key={idx}>{convo._id + convo.members}</div>
+                        //map conversations here and query other user within this convo to get his username
+                        <div className="w-25" onClick={() => setCurrConvo(convo)} key={idx}>{convo._id}, {convo.members}</div>
                     )
                 })}
             </div>
