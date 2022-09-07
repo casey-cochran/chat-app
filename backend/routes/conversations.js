@@ -8,7 +8,9 @@ const router = express.Router();
 //TODO add auth to these routes
 router.get('/:userId', asyncHandler(async(req,res) => {
     const userId = req.params.userId;
-    const chatRooms = await ChatRoom.find({userId});
+    const chatRooms = await ChatRoom.find({
+        members: {$in: userId}
+    });
     res.json({rooms: chatRooms})
 }))
 

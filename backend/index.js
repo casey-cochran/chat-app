@@ -18,10 +18,11 @@ app.use(cors({origin: true, credentials: true}));
 const server = http.createServer(app);
 const io = new Server(server, {
     cors: {
-        origin: 'http:localhost:3000',
-        methods: ['GET', 'POST']
+        origin: 'http://localhost:3000',
+        methods: ["GET", "POST"]
     }
 });
+
 
 let users = [];
 console.log(users);
@@ -35,7 +36,7 @@ const removeUser = (socketId) => {
 }
 
 const getUser = userId => {
-    return users.find((user) => user.id === userId);
+    return users.find((user) => user.userId === userId)
 }
 //socket connection here, can do more with rooms here
 io.on('connection', (socket) => {
@@ -45,17 +46,18 @@ io.on('connection', (socket) => {
     })
 
     socket.on('chat', (msg) => socket.broadcast.emit('recieved', msg))
-    console.log('a user connected')
+
     //send and get message
     socket.on('sendMessage', ({senderId, receiverId, text}) => {
-        const user = getUser(senderId);
+        const user = getUser(receiverId);
         io.to(user.socketId).emit("getMessage", {
-            senderId, text,
+            senderId, receiverId, text,
         })
     })
 
     //when a user connects add user to chat
     socket.on('addUser', (userId) => {
+        console.log('a user connected')
         addUser(userId, socket.id);
         io.emit("getUsers", users);
         console.log(userId, users)
