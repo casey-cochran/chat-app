@@ -10,7 +10,7 @@ const Home = () => {
     //map convos and set current the ony clicked and show that ones chat
     const user = useSelector((state) => state.user?.user)
     const [conversations, setConversations] = useState([]);
-    const [currentConvoId, setCurrentConvoId] = useState(null);
+    const [currentConvo, setCurrentConvo] = useState(null);
 
     useEffect(() => {
         //fetch conversations here
@@ -18,25 +18,26 @@ const Home = () => {
             const conversation = await csrfFetch(`/conversation/${user._id}`)
             const response = await conversation.json();
             const {rooms} = response;
+
             setConversations([...conversations, ...rooms])
         }
         getUserConversations();
     },[]);
 
-    const setCurrConvo = (id) => {
-      return setCurrentConvoId(id)
+    const setCurrConvo = (convo) => {
+      return setCurrentConvo(convo)
     }
-
+    // console.log(currentConvo, ' currr convo should be array')
     return (
         <div className="d-flex w-100 min-vh-100">
             <div className="w-25">
                 {conversations?.map((convo, idx) => {
                     return (
-                        <div onClick={() => setCurrConvo(convo._id)} key={idx}>{convo._id + convo.members}</div>
+                        <div onClick={() => setCurrConvo(convo)} key={idx}>{convo._id + convo.members}</div>
                     )
                 })}
             </div>
-            <Socket currentConvoId={currentConvoId}/>
+            <Socket currentConvo={currentConvo}/>
             <div className="w-25">
                 online users here
             </div>
