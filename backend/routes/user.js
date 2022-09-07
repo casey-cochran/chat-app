@@ -105,6 +105,14 @@ router.get('/', restoreUser, (req,res) => {
     }
 })
 
+//TODO add validations and auth
+router.get('/friend/:friendId', asyncHandler(async(req,res) => {
+    const friendId = req.params.friendId;
+    const user = await User.findOne({friendId}, "-password -email")
+    res.json(user);
+    console.log(user);
+}))
+
 //test route remove this later
 router.get('/all', asyncHandler(async(req,res) => {
     const allUsers = await User.find()
