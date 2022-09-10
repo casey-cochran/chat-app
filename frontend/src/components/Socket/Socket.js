@@ -15,9 +15,28 @@ const Socket = ({currentConvo}) => {
     const socket = useRef()
 
     const receiverId = currentConvo?.members.find(member => member !== user._id)
+    console.log(receiverId, 'whats thsi id ')
 
-    const sendChat = (e) => {
+    const sendChat = async(e) => {
         e.preventDefault();
+        //possible post messages here ?
+        const saveMessage = {
+            chatRoomId: currentConvo._id,
+            userId: user.id,
+            text: newMessage
+        }
+        //move post message function so that you can send messages
+        //when user is offline, then need to work out handling errors
+        //for sending messages when user online/offline?
+        const postMessage = async() => {
+         const response = await csrfFetch('/message', {
+            method: "POST",
+            body: JSON.stringify(saveMessage)
+        })
+        const data = await response.json()
+        console.log(data)
+        }
+        postMessage();
         socket.current.emit('sendMessage', {
             senderId: user._id,
             receiverId,
@@ -55,13 +74,14 @@ const Socket = ({currentConvo}) => {
         const getMessages = async(currentConvoId) => {
             const response = await csrfFetch(`/message/${currentConvoId}`);
             const data = await response.json();
+            console.log(data, 'this should be rendering messages?')
             setConvoMessages([...convoMessages, ...data.messages]);
         }
         getMessages(currentConvo?._id);
     },[currentConvo?._id])
 
     useEffect(() => {
-        //Grab user id from redux state, add it to dependency
+        //Need to add receiverId to users when loading a chat so that I can send them messages
         socket.current.emit('addUser', user._id)
         socket.current.on("getUsers", users => {
             console.log(users)
