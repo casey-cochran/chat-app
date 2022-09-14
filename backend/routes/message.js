@@ -9,6 +9,7 @@ const router = express.Router();
 //TODO add validation for creating messages and authorization
 router.post('/', asyncHandler(async(req,res) => {
     const {chatRoomId, userId, text} = req.body;
+    console.log(chatRoomId, userId, text)
     const newMessage = new Message({
         chatRoomId,
         userId,
