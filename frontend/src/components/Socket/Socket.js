@@ -22,7 +22,7 @@ const Socket = ({currentConvo}) => {
         //possible post messages here ?
         const saveMessage = {
             chatRoomId: currentConvo._id,
-            userId: user.id,
+            userId: user._id,
             text: newMessage
         }
         //move post message function so that you can send messages
@@ -74,7 +74,6 @@ const Socket = ({currentConvo}) => {
         const getMessages = async(currentConvoId) => {
             const response = await csrfFetch(`/message/${currentConvoId}`);
             const data = await response.json();
-            console.log(data, 'this should be rendering messages?')
             setConvoMessages([...convoMessages, ...data.messages]);
         }
         getMessages(currentConvo?._id);
