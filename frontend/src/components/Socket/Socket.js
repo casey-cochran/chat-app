@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import {io} from 'socket.io-client';
 import { csrfFetch } from '../../store/csrf';
+import Messages from '../Messages/Messages';
 
 const Socket = ({currentConvo}) => {
     const user = useSelector((state) => state.user?.user)
@@ -10,13 +11,11 @@ const Socket = ({currentConvo}) => {
     const [currentChat, setCurrentChat] = useState(null);
     const [convoMessages, setConvoMessages] = useState([]);
     const [arrivalMessage, setArrivalMessage] = useState(null);
-
-    const [chatInput, setChatInput] = useState('');
     const socket = useRef()
 
     const receiverId = currentConvo?.members.find(member => member !== user._id)
-    console.log(receiverId, 'whats thsi id ')
 
+    console.log(messages, ' waht are mesages')
     const sendChat = async(e) => {
         e.preventDefault();
         //possible post messages here ?
@@ -25,6 +24,7 @@ const Socket = ({currentConvo}) => {
             userId: user._id,
             text: newMessage
         }
+        setMessages([...messages, saveMessage])
         //move post message function so that you can send messages
         //when user is offline, then need to work out handling errors
         //for sending messages when user online/offline?
@@ -34,7 +34,6 @@ const Socket = ({currentConvo}) => {
             body: JSON.stringify(saveMessage)
         })
         const data = await response.json()
-        console.log(data)
         }
         postMessage();
         socket.current.emit('sendMessage', {
@@ -51,7 +50,6 @@ const Socket = ({currentConvo}) => {
 
     useEffect(() => {
         socket.current.on('getMessage', data => {
-            console.log(data,' did  Irecieve data')
             setArrivalMessage({
                 sender: data.senderId,
                 text: data.text,
@@ -61,13 +59,8 @@ const Socket = ({currentConvo}) => {
     },[])
 
     useEffect(() => {
-        // console.log(currentConvo?.members.includes(arrivalMessage.sender))
-        // arrivalMessage && currentConvo?.members.includes(arrivalMessage.sender) &&
         arrivalMessage && currentConvo?.members.includes(arrivalMessage.sender) &&
-        arrivalMessage &&
-        // setMessages(arrivalMessage.text)
-        setMessages((prev) => [...prev, arrivalMessage?.text])
-        console.log(messages)
+        setMessages((prev) => [...prev, arrivalMessage])
     }, [arrivalMessage, currentChat])
 
     useEffect(() => {
@@ -93,12 +86,14 @@ const Socket = ({currentConvo}) => {
         })
         return (() => socket.current.disconnect())
     }, [socket])
-
+console.log(convoMessages, user._id)
     return (
         <div className='flex-grow-1'>
             {convoMessages?.map((message, i) => {
                 return (
-                <div key={i}>{message.text}</div>
+                <div key={i}>
+                <Messages message={message.text} owned={message.userId === user._id} />
+                </div>
                 )
             })}
             <form onSubmit={sendChat}>
@@ -111,7 +106,10 @@ const Socket = ({currentConvo}) => {
             <div>
                 {messages?.map((message, idx) => {
                     return (
-                        <div key={idx}>{message}</div>
+                        // <div key={idx}>{message}</div>
+                        <div key={idx}>
+                        <Messages message={message.text} owned={message.userId === user._id} />
+                        </div>
                     )
                 })}
             </div>
