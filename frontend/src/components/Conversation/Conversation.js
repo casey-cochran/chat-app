@@ -13,6 +13,7 @@ const Conversation = ({convo, userId}) => {
     useEffect(() => {
         const friendId = convo.members.find((user) => user !== userId);
         const fetchFriend = async(friendId) => {
+            //TODO add try catch here for errors
             const response = await csrfFetch(`/user/friend/${friendId}`)
             const data = await response.json();
             console.log(data, ' friend here ?')

@@ -28,12 +28,15 @@ const Home = () => {
 
 
     return (
-        <div className="d-flex w-100 min-vh-100">
+        <div className="d-flex w-100 calc-height ">
             <div className="w-25">
                 {conversations?.map((convo, idx) => {
                     return (
-                        <div key={idx}>
+                        <div className="card" key={idx}>
+                            <div className="card-body p-5 text-center bg-info bg-success text-dark bg-opacity-25">
                         <Conversation convo={convo} userId={user.id} />
+
+                            </div>
                         </div>
                     )
                 })}

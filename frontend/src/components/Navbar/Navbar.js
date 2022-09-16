@@ -11,7 +11,7 @@ import './Navbar.css';
 
 const Navigation = () => {
   return (
-    <nav className="navbar navbar-expand-lg navbar-light bg-primary py-5">
+    <nav className="navbar test navbar-expand-lg navbar-light bg-primary py-5">
       <div className="container-fluid d-flex flex-row-reverse">
         <a className="navbar-brand text-white w-25 text-center" href="#">
           Chat-App

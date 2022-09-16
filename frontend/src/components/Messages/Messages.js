@@ -10,7 +10,7 @@ const Messages = ({message, owned}) => {
     }
     return (
         <>
-        <div style={owned ? ownMessage : notOwned}>
+        <div  style={owned ? ownMessage : notOwned}>
             {message}
         </div>
         </>

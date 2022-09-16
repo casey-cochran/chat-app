@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import {io} from 'socket.io-client';
 import { csrfFetch } from '../../store/csrf';
 import Messages from '../Messages/Messages';
+import './Socket.css';
 
 const Socket = ({currentConvo}) => {
     const user = useSelector((state) => state.user?.user)
@@ -86,16 +87,20 @@ const Socket = ({currentConvo}) => {
         })
         return (() => socket.current.disconnect())
     }, [socket])
-console.log(convoMessages, user._id)
+
     return (
-        <div className='flex-grow-1'>
+        <div className='flex-grow-1 mh-100 position-relative'>
+            <div className='calc-height-chat w-100 position-relative overflow-auto'>
+            <div className='w-100 mh-100 overflow-auto'>
             {convoMessages?.map((message, i) => {
                 return (
-                <div key={i}>
+                <div  key={i}>
                 <Messages message={message.text} owned={message.userId === user._id} />
                 </div>
                 )
             })}
+            </div>
+            {/* <div className='position-form'>
             <form onSubmit={sendChat}>
                 <input
                     value={newMessage}
@@ -103,15 +108,27 @@ console.log(convoMessages, user._id)
                 />
                 <button type='submit'>Send</button>
             </form>
-            <div>
+            </div> */}
+            <div >
                 {messages?.map((message, idx) => {
                     return (
                         // <div key={idx}>{message}</div>
-                        <div key={idx}>
+                        <div  key={idx}>
                         <Messages message={message.text} owned={message.userId === user._id} />
                         </div>
                     )
                 })}
+            </div>
+        </div>
+        <div className='position-form w-100'>
+            <form className='d-flex w-100' onSubmit={sendChat}>
+                <input
+                    className='form-control'
+                    value={newMessage}
+                    onChange={(e) => setNewMessage(e.target.value)}
+                />
+                <button type='submit' className='btn btn-primary w-25 '>Send</button>
+            </form>
             </div>
         </div>
 

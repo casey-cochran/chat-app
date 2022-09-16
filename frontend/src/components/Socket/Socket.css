@@ -1,0 +1,19 @@
+.calc-height{
+    height: calc(100% - 150px);
+}
+
+.calc-height-chat{
+    height: calc(100% - 50px);
+}
+
+.message-cont{
+    max-height: 100%;
+    overflow: auto;
+}
+
+
+.position-form{
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}
