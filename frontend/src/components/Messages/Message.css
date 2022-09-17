@@ -18,6 +18,7 @@
     width: max-content;
     background-color: rgb(84, 246, 176);
     text-align: right;
+    margin-right: 10px;
     padding: 10px;
     border-radius: 10px;
     margin-top: 5px;
@@ -30,6 +31,7 @@
     width: max-content;
     background-color: rgb(115, 210, 233);
     text-align: right;
+    margin-left: 10px;
     padding: 10px;
     border-radius: 10px;
     margin-top: 5px;

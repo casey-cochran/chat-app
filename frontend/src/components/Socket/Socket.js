@@ -67,12 +67,12 @@ const Socket = ({currentConvo}) => {
 
 
     useEffect(() => {
-        //reset convo messages when conversation changes to prevent mixing chats
-        if(convoMessages.length > 0) setConvoMessages([]);
+        setMessages([]);
         const getMessages = async(currentConvoId) => {
             const response = await csrfFetch(`/message/${currentConvoId}`);
             const data = await response.json();
-            setConvoMessages([...convoMessages, ...data.messages]);
+            //Will this error if no messages? try catch?
+            setConvoMessages([...data.messages]);
         }
         getMessages(currentConvo?._id);
     },[currentConvo?._id])
@@ -92,17 +92,24 @@ const Socket = ({currentConvo}) => {
         return (() => socket.current.disconnect())
     }, [socket])
 
+    const bottomRef = useRef(null);
+
+    useEffect(() => {
+        bottomRef.current?.scrollIntoView();
+    }, [convoMessages])
+
     return (
-        <div className='flex-grow-1 mh-100 position-relative'>
+        <div className='flex-grow-1 border border-dark mh-100 position-relative'>
             <div className='calc-height-chat w-100 position-relative overflow-auto'>
             <div className='w-100 mh-100 overflow-auto'>
             {convoMessages?.map((message, i) => {
                 return (
-                <div  key={i}>
+                    <div  key={i}>
                 <Messages message={message.text} owned={message.userId === user._id} />
                 </div>
                 )
             })}
+            <div ref={bottomRef} />
             </div>
             {/* <div className='position-form'>
             <form onSubmit={sendChat}>
@@ -125,13 +132,14 @@ const Socket = ({currentConvo}) => {
             </div>
         </div>
         <div className='position-form w-100'>
-            <form className='d-flex w-100' onSubmit={sendChat}>
+            <form className='d-flex input-w' onSubmit={sendChat}>
                 <input
-                    className='form-control'
+                    className='submit-msg mb-2 form-control'
+                    placeholder='Send Message...'
                     value={newMessage}
                     onChange={(e) => setNewMessage(e.target.value)}
                 />
-                <button type='submit' className='btn btn-primary w-25 '>Send</button>
+                <button type='submit' className='btn btn-primary w-25 mb-2 '>Send</button>
             </form>
             </div>
         </div>
