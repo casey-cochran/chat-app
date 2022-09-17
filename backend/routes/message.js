@@ -23,7 +23,7 @@ router.post('/', asyncHandler(async(req,res) => {
 router.get('/:conversationId', asyncHandler(async(req,res) => {
     const conversationId = req.params.conversationId;
     const messages = await Message.find({chatRoomId: conversationId});
-
+    //TODO sort all messages by date it was created and send back to front-end
     res.json({messages})
 }))
 
