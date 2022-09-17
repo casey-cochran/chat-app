@@ -1,0 +1,36 @@
+.owned{
+    display: flex;
+    width: 100%;
+    height: 100%;
+    justify-content: flex-end;
+}
+
+.notOwned{
+    display: flex;
+    width: 100%;
+    height: 100%;
+    justify-content: flex-start;
+}
+
+.ownedMessage{
+    display: flex;
+    flex-direction: column;
+    width: max-content;
+    background-color: rgb(84, 246, 176);
+    text-align: right;
+    padding: 10px;
+    border-radius: 10px;
+    margin-top: 5px;
+
+}
+
+.notOwnedMessage{
+    display: flex;
+    flex-direction: column;
+    width: max-content;
+    background-color: rgb(115, 210, 233);
+    text-align: right;
+    padding: 10px;
+    border-radius: 10px;
+    margin-top: 5px;
+}

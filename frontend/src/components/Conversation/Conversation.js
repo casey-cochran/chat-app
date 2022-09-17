@@ -1,12 +1,8 @@
 import { useEffect, useState } from "react";
 import { csrfFetch } from "../../store/csrf";
-import { addConversation } from "../../store/conversationSlice";
-import { useDispatch } from "react-redux";
 
 
 const Conversation = ({convo, userId}) => {
-    const dispatch = useDispatch();
-    const [currentConvo, setCurrentConvo] = useState(null);
     const [friend, setFriend] = useState(null);
 
 
@@ -22,12 +18,8 @@ const Conversation = ({convo, userId}) => {
         fetchFriend(friendId);
     },[])
 
-    const setCurrConvo = (convo) => {
-        dispatch(addConversation(convo));
-      }
-
     return(
-        <div className="w-25" onClick={() => setCurrConvo(convo)}>{friend}</div>
+        <div className="w-25">{friend}</div>
     )
 }
 

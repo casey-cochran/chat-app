@@ -64,7 +64,11 @@ const Socket = ({currentConvo}) => {
         setMessages((prev) => [...prev, arrivalMessage])
     }, [arrivalMessage, currentChat])
 
+
+
     useEffect(() => {
+        //reset convo messages when conversation changes to prevent mixing chats
+        if(convoMessages.length > 0) setConvoMessages([]);
         const getMessages = async(currentConvoId) => {
             const response = await csrfFetch(`/message/${currentConvoId}`);
             const data = await response.json();

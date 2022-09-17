@@ -1,0 +1,9 @@
+.conv-bg{
+    background-color: rgb(84, 246, 176);
+    cursor: pointer;
+}
+
+.conv-bg:hover{
+    background-color: rgb(41, 247, 158);
+    cursor: pointer;
+}

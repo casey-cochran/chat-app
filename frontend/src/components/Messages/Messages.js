@@ -1,17 +1,12 @@
-
+import './Message.css';
 
 
 const Messages = ({message, owned}) => {
-    const ownMessage = {
-        backgroundColor: 'blue'
-    }
-    const notOwned = {
-        backgroundColor: 'red'
-    }
+
     return (
         <>
-        <div  style={owned ? ownMessage : notOwned}>
-            {message}
+        <div  className={owned ? 'owned' : 'notOwned'}>
+            <div className={owned ? 'ownedMessage' : 'notOwnedMessage'}>{message} </div>
         </div>
         </>
     )
