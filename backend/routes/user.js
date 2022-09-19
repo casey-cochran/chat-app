@@ -41,7 +41,7 @@ router.post('/signup', validateUser, asyncHandler(async(req,res, next) => {
     const token = jwt.sign(
         payload,
         process.env.JWT_SECRET, {
-            expiresIn: parseInt(process.env.JWT_EXPIRES_IN, 10)
+            expiresIn: parseInt(process.env.JWT_EXPIRES_IN)
         },
     );
     res.cookie('token', token, {
