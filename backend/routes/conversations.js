@@ -7,7 +7,7 @@ import requireAuth from '../utils/auth.js';
 const router = express.Router();
 
 //TODO add auth to these routes
-router.get('/:userId', asyncHandler(async(req,res) => {
+router.get('/:userId', requireAuth, asyncHandler(async(req,res) => {
     const userId = req.params.userId;
     const chatRooms = await ChatRoom.find({
         members: {$in: userId}
@@ -16,7 +16,7 @@ router.get('/:userId', asyncHandler(async(req,res) => {
 }))
 
 //TODO add auth and validation
-router.post('/new', asyncHandler(async(req,res) => {
+router.post('/new', requireAuth, asyncHandler(async(req,res) => {
     const {members, userId} = req.body;
 
     const newChatRoom = new ChatRoom({members, userId});
