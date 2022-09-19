@@ -1,24 +1,29 @@
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Label, Input, FormFeedback, Container } from "reactstrap";
 import { useState } from "react";
 import { csrfFetch } from "../../store/csrf";
-import { useSelector } from "react-redux";
+import { useSelector, dispatch, useDispatch } from "react-redux";
+import {addNewConversation} from '../../store/conversationSlice.js';
 
 const CreateConvoModal = ({ open, toggle }) => {
-    const user = useSelector((state) => state.user?.user)
+    const user = useSelector((state) => state.user?.user);
+    const dispatch = useDispatch();
     //TODO need members and userId to create a chatroom, currently members are optional
-    const [friendId, setFriendId] = useState('');
-    const [errors, setErrors] = useState([]);
+    const [username, setUsername] = useState('');
+    const [errors, setErrors] = useState('');
 
     const handleSubmit = async(e) => {
         e.preventDefault();
         //change friendId to username
-        const convoMembers = [friendId, user._id]
         //Need to add the createconvo as a redux state slice to show on side.
         const createConversation = await csrfFetch('/conversation/new', {
             method: "POST",
-            body: JSON.stringify({members: convoMembers, userId: user._id})
+            body: JSON.stringify({username: username, userId: user._id})
         })
-        //invoke toggle to close modal
+        const newConversation = await createConversation.json();
+        if(newConversation.err){
+         return setErrors(newConversation.err);
+        }
+        dispatch(addNewConversation(newConversation));
         toggle()
     };
 
@@ -35,11 +40,11 @@ const CreateConvoModal = ({ open, toggle }) => {
               <Input
                 type="text"
                 className="w-100"
-                value={friendId}
-                onChange={(e) => setFriendId(e.target.value)}
-                invalid={errors.email ? true : false}
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                invalid={errors ? true : false}
               />
-              <FormFeedback>{errors.email}</FormFeedback>
+              <FormFeedback>{errors}</FormFeedback>
             </div>
           </FormGroup>
         </Form>

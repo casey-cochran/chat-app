@@ -4,16 +4,16 @@ import { csrfFetch } from "../../store/csrf";
 import { useSelector } from "react-redux";
 import Conversation from "../Conversation/Conversation";
 import { useDispatch } from "react-redux";
-import { addConversation } from "../../store/conversationSlice";
+import { setCurrentConversation, loadConversations } from "../../store/conversationSlice";
 import "./Home.css";
 import { BsPlusCircle } from "react-icons/bs";
 import CreateConvoModal from "../CreateConversationModal/CreateConvoModal.js";
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 
 const Home = () => {
   const user = useSelector((state) => state.user?.user);
   const dispatch = useDispatch();
-  const conversation = useSelector((state) => state.conversation?.conversation);
+  const conversation = useSelector((state) => state.conversation?.currentConversation);
+  const userConvos = useSelector((state) => state.conversation.userConvos);
   const [conversations, setConversations] = useState([]);
   const [errors, setErrors] = useState([]);
 
@@ -21,7 +21,7 @@ const Home = () => {
   const toggle = () => setOpen(!open);
 
   const setCurrConvo = (convo) => {
-    dispatch(addConversation(convo));
+    dispatch(setCurrentConversation(convo));
   };
 
   useEffect(() => {
@@ -30,7 +30,7 @@ const Home = () => {
         const conversation = await csrfFetch(`/conversation/${user._id}`);
         const response = await conversation.json();
         const { rooms } = response;
-        setConversations([...conversations, ...rooms]);
+        dispatch(loadConversations(rooms));
       };
       getUserConversations();
     } catch (err) {
@@ -41,7 +41,7 @@ const Home = () => {
   return (
     <div className="d-flex w-100 calc-height ">
       <div className="w-25">
-        {conversations?.map((convo, idx) => {
+        {userConvos?.map((convo, idx) => {
           return (
             <div className="card" onClick={() => setCurrConvo(convo)} key={idx}>
               <div className="card-body p-5 text-center conv-bg  text-dark bg-opacity-25">
