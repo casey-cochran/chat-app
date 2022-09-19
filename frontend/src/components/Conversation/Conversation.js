@@ -10,6 +10,9 @@ const Conversation = ({convo, userId}) => {
         const friendId = convo.members.find((user) => user !== userId);
         const fetchFriend = async(friendId) => {
             //TODO add try catch here for errors
+            //May have to add this as a redux state slice
+            //since adding a new convo will have to append to this?
+            //or just push the new convo on here wihtout doing async call
             const response = await csrfFetch(`/user/friend/${friendId}`)
             const data = await response.json();
             console.log(data, ' friend here ?')
