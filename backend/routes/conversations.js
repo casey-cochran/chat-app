@@ -16,6 +16,9 @@ router.get('/:userId', requireAuth, asyncHandler(async(req,res) => {
 }))
 
 //TODO add auth and validation
+//Need to validate username, query user by that user name and get their id then create a conversation
+//Would be better to search user and click on their username which sends id
+//or is it the same because you would have to query twice either way with search
 router.post('/new', requireAuth, asyncHandler(async(req,res) => {
     const {members, userId} = req.body;
 
