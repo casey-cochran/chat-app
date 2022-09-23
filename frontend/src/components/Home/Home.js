@@ -31,6 +31,7 @@ const Home = () => {
         const conversation = await csrfFetch(`/conversation/${user._id}`);
         const response = await conversation.json();
         const { rooms } = response;
+        console.log(rooms ,' where are all my rooms')
         dispatch(loadConversations(rooms));
       };
       getUserConversations();

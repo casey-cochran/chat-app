@@ -26,6 +26,7 @@ const CreateConvoModal = ({ open, toggle }) => {
     e.preventDefault();
     const newConversation = { username: username, userId: user._id };
     const createConvo = await dispatch(createConversation(newConversation));
+    console.log(createConvo, ' this should be an error frontend')
     if (createConvo.payload?.err) {
       return setError(createConvo.payload.err);
     }

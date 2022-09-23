@@ -39,7 +39,7 @@ const conversationSlice = createSlice({
       state.userConvos = action.payload;
     },
     deleteConversation: (state, action) => {
-        state.userConvos.filter((convo) => convo._id !== action.payload)
+        state.userConvos = state.userConvos.filter((convo) => convo._id !== action.payload)
     }
   },
   extraReducers: {

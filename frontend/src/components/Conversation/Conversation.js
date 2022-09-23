@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { csrfFetch } from "../../store/csrf";
 import {RiDeleteBack2Line} from 'react-icons/ri';
 import './Conversation.css';
-import { deleteConversation } from "../../store/conversationSlice";
+import { deleteConversation } from "../../store/conversationSlice.js";
 import { useDispatch } from "react-redux";
 
 
@@ -19,7 +19,7 @@ const Conversation = ({convo, userId}) => {
             //or just push the new convo on here wihtout doing async call
             const response = await csrfFetch(`/user/friend/${friendId}`)
             const data = await response.json();
-            console.log(data, ' friend here ?')
+            // console.log(data, ' friend here ?')
             setFriend(data.username);
         }
         fetchFriend(friendId);
