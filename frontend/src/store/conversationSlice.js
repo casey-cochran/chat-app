@@ -20,6 +20,7 @@ export const createConversation = createAsyncThunk(
       if(newConvo.err){
        return rejectWithValue(newConvo)
       }
+      return newConvo
     } catch (e) {
       const error = await e.json();
       return rejectWithValue(error);
@@ -37,9 +38,9 @@ const conversationSlice = createSlice({
     loadConversations: (state, action) => {
       state.userConvos = action.payload;
     },
-    addNewConversation: (state, action) => {
-      state.userConvos.unshift(action.payload);
-    },
+    deleteConversation: (state, action) => {
+        state.userConvos.filter((convo) => convo._id !== action.payload)
+    }
   },
   extraReducers: {
     [createConversation.pending]: (state, action) => {
@@ -47,6 +48,7 @@ const conversationSlice = createSlice({
     },
     [createConversation.fulfilled]: (state, action) => {
         state.status = 'success';
+        state.error = null;
         state.userConvos.unshift(action.payload);
     },
     [createConversation.rejected]: (state, action) => {
@@ -56,6 +58,6 @@ const conversationSlice = createSlice({
   }
 });
 
-export const { setCurrentConversation, loadConversations, addNewConversation } =
+export const { setCurrentConversation, loadConversations, deleteConversation } =
   conversationSlice.actions;
 export default conversationSlice.reducer;

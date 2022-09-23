@@ -1,0 +1,9 @@
+.icon-delete{
+    font-size: 28px;
+    color: white;
+    cursor: pointer;
+}
+
+.icon-delete:hover{
+    color: black;
+}
