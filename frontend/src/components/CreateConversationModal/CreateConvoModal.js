@@ -1,39 +1,46 @@
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Label, Input, FormFeedback, Container } from "reactstrap";
-import { useState } from "react";
-import { csrfFetch } from "../../store/csrf";
+import {
+  Button,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  Form,
+  FormGroup,
+  Label,
+  Input,
+  FormFeedback,
+} from "reactstrap";
+import { useEffect, useState } from "react";
 import { useSelector, dispatch, useDispatch } from "react-redux";
-import {addNewConversation} from '../../store/conversationSlice.js';
+import {
+  createConversation,
+} from "../../store/conversationSlice.js";
 
 const CreateConvoModal = ({ open, toggle }) => {
-    const user = useSelector((state) => state.user?.user);
-    const dispatch = useDispatch();
-    //TODO need members and userId to create a chatroom, currently members are optional
-    const [username, setUsername] = useState('');
-    const [errors, setErrors] = useState('');
+  const user = useSelector((state) => state.user?.user);
+  const dispatch = useDispatch();
+  const [username, setUsername] = useState("");
+  const [error, setError] = useState("");
 
-    const handleSubmit = async(e) => {
-        e.preventDefault();
-        //change friendId to username
-        //Need to add the createconvo as a redux state slice to show on side.
-        const createConversation = await csrfFetch('/conversation/new', {
-            method: "POST",
-            body: JSON.stringify({username: username, userId: user._id})
-        })
-        const newConversation = await createConversation.json();
-        if(newConversation.err){
-         return setErrors(newConversation.err);
-        }
-        dispatch(addNewConversation(newConversation));
-        toggle()
-    };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const newConversation = { username: username, userId: user._id };
+    const createConvo = await dispatch(createConversation(newConversation));
+    if (createConvo.payload.err) {
+      return setError(createConvo.payload.err);
+    }
+    toggle();
+  };
 
+  useEffect(() => {
+    if (!username) setError("");
+  }, [username]);
 
   return (
     <Modal isOpen={open} toggle={toggle} centered={true}>
       <ModalHeader toggle={toggle}>Create New Conversation</ModalHeader>
       <ModalBody>
-
-      <Form onSubmit={handleSubmit}>
+        <Form onSubmit={handleSubmit}>
           <FormGroup className="form w-100 p-3">
             <div className="pb-2">
               <Label>Enter friends username below</Label>
@@ -42,9 +49,9 @@ const CreateConvoModal = ({ open, toggle }) => {
                 className="w-100"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                invalid={errors ? true : false}
+                invalid={error ? true : false}
               />
-              <FormFeedback>{errors}</FormFeedback>
+              <FormFeedback>{error}</FormFeedback>
             </div>
           </FormGroup>
         </Form>
