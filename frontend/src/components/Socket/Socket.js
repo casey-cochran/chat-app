@@ -7,11 +7,13 @@ import "./Socket.css";
 
 const Socket = ({ currentConvo }) => {
   const user = useSelector((state) => state.user?.user);
+  const userConvos = useSelector((state) => state.conversation.userConvos);
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
   const [currentChat, setCurrentChat] = useState(null);
   const [convoMessages, setConvoMessages] = useState([]);
   const [arrivalMessage, setArrivalMessage] = useState(null);
+  const [error, setError] = useState(null);
   const socket = useRef();
 
   const receiverId = currentConvo?.members.find(
@@ -26,8 +28,8 @@ const Socket = ({ currentConvo }) => {
       chatRoomId: currentConvo._id,
       userId: user._id,
       text: newMessage,
+      receiverId,
     };
-    setMessages([...messages, saveMessage]);
     //move post message function so that you can send messages
     //when user is offline, then need to work out handling errors
     //for sending messages when user online/offline?
@@ -37,8 +39,20 @@ const Socket = ({ currentConvo }) => {
         body: JSON.stringify(saveMessage),
       });
       const data = await response.json();
+      if(data.err){
+        setError(data.err);
+       return false;
+
+      }
+      console.log(data,' message returned')
     };
-    postMessage();
+    const messageSuccess = await postMessage();
+    if(!messageSuccess){
+      alert(`${error}`);
+      window.location.reload();
+      return;
+    }
+    setMessages([...messages, saveMessage]);
     socket.current.emit("sendMessage", {
       senderId: user._id,
       receiverId,
@@ -84,7 +98,7 @@ const Socket = ({ currentConvo }) => {
     socket.current.on("getUsers", (users) => {
       console.log(users);
     });
-  }, [user._id]);
+  }, [user._id, userConvos.length]);
 
   useEffect(() => {
     socket.current.on("recieved", (chat) => {
