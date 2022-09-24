@@ -1,6 +1,7 @@
 import express from 'express';
 import asyncHandler from 'express-async-handler';
 import Message from '../models/Message.js';
+import ChatRoom from '../models/ChatRoom.js';
 import requireAuth from '../utils/auth.js';
 
 
@@ -8,14 +9,19 @@ const router = express.Router();
 
 //TODO add validation for creating messages and authorization
 router.post('/', asyncHandler(async(req,res) => {
-    const {chatRoomId, userId, text} = req.body;
+    const {chatRoomId, userId, text, receiverId} = req.body;
+    const isChatRoom = await ChatRoom.findOne({_id: chatRoomId})
+    if(!isChatRoom) {
+        console.log(isChatRoom, 'hello')
+        return res.json({err: "chat no longer exists"})
+    }
     const newMessage = new Message({
         chatRoomId,
         userId,
         text
     })
      newMessage.save();
-    console.log(newMessage)
+    // console.log(newMessage)
     res.json(newMessage);
 }))
 

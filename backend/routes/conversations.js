@@ -30,8 +30,8 @@ router.post(
   asyncHandler(async (req, res) => {
     const { username, userId } = req.body;
     const friend = await User.findOne({ username });
-    const userChatRoom = await ChatRoom.findOne({_id: userId})
-    console.log(userChatRoom, 'si this true or null')
+    const userChatRoom = await ChatRoom.findOne({userId: userId})
+    // console.log(userChatRoom, 'si this true or null')
     if (!friend) {
       return res.json({ err: "User does not exist" });
     }
@@ -41,10 +41,10 @@ router.post(
     });
     //if user is already apart of other convos but it is not his create chatroom
     //then allow user to create new chatroom with that person, else throw error
-    if (convoAlreadyExists.length > 0 && !userChatRoom) {
+    if (convoAlreadyExists.length > 0 || userChatRoom) {
       return res.json({ err: "Conversation with this user already exists" });
     }
-    console.log(friend, userId, ' should be diferent')
+    // console.log(friend, userId, ' should be diferent')
     const members = [friend._id.toString(), userId];
     const newChatRoom = new ChatRoom({ members, userId });
     newChatRoom.save();

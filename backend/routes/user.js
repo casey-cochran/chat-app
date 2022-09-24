@@ -45,7 +45,7 @@ router.post('/signup', validateUser, asyncHandler(async(req,res, next) => {
         },
     );
     res.cookie('token', token, {
-        maxAge: process.env.JWT_EXPIRES_IN * 1000,
+        maxAge: parseInt(process.env.JWT_EXPIRES_IN) * 1000,
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
         sameSite: process.env.NODE_ENV === 'production' && "Lax"
@@ -77,10 +77,10 @@ router.post('/login', validateLogin, asyncHandler(async(req, res) => {
     const token = jwt.sign(
         payload,
         process.env.JWT_SECRET,
-        {expiresIn: process.env.JWT_EXPIRES_IN},
+        {expiresIn: parseInt(process.env.JWT_EXPIRES_IN)},
     );
     res.cookie('token', token, {
-        maxAge: process.env.JWT_EXPIRES_IN * 1000,
+        maxAge: parseInt(process.env.JWT_EXPIRES_IN) * 1000,
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
         sameSite: process.env.NODE_ENV === 'production' && "Lax"
@@ -108,7 +108,7 @@ router.get('/', restoreUser, (req,res) => {
 //TODO add validations and auth
 router.get('/friend/:friendId', asyncHandler(async(req,res) => {
     const friendId = req.params.friendId;
-    const user = await User.findOne({friendId}, "-password -email")
+    const user = await User.findOne({_id: friendId}, "-password -email")
     res.json(user);
     console.log(user);
 }))
