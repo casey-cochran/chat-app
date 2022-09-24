@@ -48,6 +48,8 @@ const Socket = ({ currentConvo }) => {
     };
     const messageSuccess = await postMessage();
     if(!messageSuccess){
+      //Should I alread and reload, or just remove the convo out of state if not found
+      //rather than refreshing
       alert(`${error}`);
       window.location.reload();
       return;
