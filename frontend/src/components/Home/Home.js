@@ -47,7 +47,7 @@ const Home = () => {
           return (
             <div className="card" onClick={() => setCurrConvo(convo)} key={idx}>
               <div className="card-body p-5 text-center conv-bg  text-dark bg-opacity-25">
-                <Conversation convo={convo} userId={user.id} />
+                <Conversation convo={convo} userId={user._id} />
               </div>
             </div>
           );
