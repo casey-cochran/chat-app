@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Route, Routes, useNavigate} from 'react-router-dom';
 import Home from './components/Home/Home.js';
@@ -12,15 +12,11 @@ function App() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = useSelector((state) => state.user)
-  useEffect(() => {
-    dispatch(restoreUser())
-  }, []);
 
   useEffect(() => {
-    if(!user.user){
-      navigate('/login');
-    }
+     dispatch(restoreUser()).then(() => {if(!user.user) navigate('/')})
   }, []);
+
 
   return (
     <div className='h-100' >
