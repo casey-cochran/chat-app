@@ -1,7 +1,19 @@
+import { useNavigate } from 'react-router';
+import { csrfFetch } from '../../store/csrf';
 import './Navbar.css';
 import Search from './Search';
 
 const Navigation = () => {
+  const navigate = useNavigate();
+  const logOut = async() => {
+    const response = await csrfFetch('/user/logout', {
+      method: "DELETE"
+    });
+    const data = await response.json();
+    navigate('/login');
+    console.log(data, 'logout success')
+  }
+
   return (
     <nav className="navbar test navbar-expand-lg navbar-light bg-primary py-5">
       <div className="container-fluid d-flex flex-row-reverse">
@@ -44,8 +56,8 @@ const Navigation = () => {
               </a>
               <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
                 <li>
-                  <a className="dropdown-item" href="#">
-                    Action
+                  <a className="dropdown-item" href="#" onClick={logOut}>
+                    sign out
                   </a>
                 </li>
                 <li>

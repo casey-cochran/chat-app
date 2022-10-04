@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Route, Routes} from 'react-router-dom';
+import { Route, Routes, useNavigate} from 'react-router-dom';
 import Home from './components/Home/Home.js';
 import Login from './components/Login/Login.js';
 import Signup from './components/Signup/Signup.js';
@@ -10,21 +10,30 @@ import Navigation from './components/Navbar/Navbar.js';
 
 function App() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const user = useSelector((state) => state.user)
   useEffect(() => {
     dispatch(restoreUser())
   }, []);
 
+  useEffect(() => {
+    if(!user.user){
+      navigate('/login');
+    }
+  }, []);
+
   return (
     <div className='h-100' >
-      <Navigation />
+       {user.user && <Navigation />}
 
       <Routes>
-      {user.user && <Route path='/' element={<Home />} /> }
-        <Route path='/signup' element={<Signup />} />
         <Route path='/login' element={<Login />} />
+      {user.user && <>
+        <Route path='/' element={<Home />} />
+        <Route path='/signup' element={<Signup />} />
         <Route path='/another/test' element={null} />
         <Route path='/socket' element={<Socket />} />
+        </>}
       </Routes>
 
     </div>
