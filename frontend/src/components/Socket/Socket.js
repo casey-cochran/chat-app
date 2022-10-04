@@ -40,13 +40,11 @@ const Socket = ({ currentConvo }) => {
       });
       const data = await response.json();
       if(data.err){
-        setError(data.err);
-       return false;
+        return setError(data.err);
       }
       return data;
     };
     const messageSuccess = await postMessage();
-    console.log(messageSuccess, 'waht is this ?')
     if(!messageSuccess){
       //Should I alread and reload, or just remove the convo out of state if not found
       //rather than refreshing

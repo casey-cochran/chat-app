@@ -24,9 +24,10 @@ const CreateConvoModal = ({ open, toggle }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if(username === user.username) return setError("Please enter another users username")
     const newConversation = { username: username, userId: user._id };
     const createConvo = await dispatch(createConversation(newConversation));
-    console.log(createConvo, ' this should be an error frontend')
+    console.log(createConvo.payload, ' this should be an error frontend')
     if (createConvo.payload?.err) {
       return setError(createConvo.payload.err);
     }
