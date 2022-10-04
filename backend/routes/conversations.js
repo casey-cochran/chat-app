@@ -1,6 +1,7 @@
 import express from "express";
 import asyncHandler from "express-async-handler";
 import ChatRoom from "../models/ChatRoom.js";
+import Message from "../models/Message.js";
 import User from "../models/User.js";
 import requireAuth from "../utils/auth.js";
 import handleValidationErrors from "../utils/validation.js";
@@ -49,6 +50,7 @@ router.post(
     const newChatRoom = new ChatRoom({ members, userId });
     newChatRoom.save();
     //Added timestamps to model? for new room?
+    console.log(newChatRoom, 'is this registereing?')
     res.json(newChatRoom);
   })
 );
@@ -57,7 +59,9 @@ router.post(
 router.delete('/delete', requireAuth, asyncHandler(async(req,res) => {
     const {convoId} = req.body;
     const deleteRoom = await ChatRoom.deleteOne({_id: convoId});
+    const deleteMessages = await Message.deleteMany({chatRoomId: convoId});
     console.log(deleteRoom.deletedCount === 1)
+    console.log(deleteMessages.deletedCount);
     res.json({msg: 'ok'})
 }))
 
