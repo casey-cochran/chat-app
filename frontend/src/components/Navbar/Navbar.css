@@ -1,7 +1,11 @@
 .nav-item > a{
-    color: white;
+    color: black;
     font-weight: 400;
     font-size: 20px;
+}
+
+.nav-bg{
+    background-color: rgb(255, 255, 255);
 }
 
 .test{

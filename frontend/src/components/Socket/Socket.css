@@ -11,6 +11,15 @@
     overflow: auto;
 }
 
+#bg{
+    background-color: #00afb9;
+    color:white;
+
+}
+
+.socket-bg{
+    background-color: rgb(249, 249, 249);
+}
 
 .position-form{
     position: absolute;
@@ -30,4 +39,3 @@
     margin-right: 10px;
     margin-left: 5px;
 }
-

@@ -1,13 +1,26 @@
 .conv-bg{
-    background-color: rgb(84, 246, 176);
+    background-color: #00afb9;
     cursor: pointer;
 }
 
+.convo-cont-bg{
+    background-color: rgb(249, 249, 249);
+}
+
 .conv-bg:hover{
-    background-color: rgb(41, 247, 158);
+    background-color: #01b4bd;
     cursor: pointer;
 }
 
 .icon-add{
     font-size: 30px;
+    color: rgb(238, 235, 235);
+}
+
+.icon-add:hover{
+    color: rgb(224, 224, 224);
+}
+
+.cont-bg{
+    background-color: #FDFCDC;;
 }

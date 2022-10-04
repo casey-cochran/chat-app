@@ -38,7 +38,7 @@ const Conversation = ({convo, userId}) => {
 
     return(
         <>
-        <div className="w-100 d-flex justify-content-between">
+        <div className="w-100 d-flex friend-col justify-content-between">
             {friend}
             <RiDeleteBack2Line onClick={deleteRoom} className="icon-delete" />
         </div>

@@ -119,7 +119,7 @@ const Socket = ({ currentConvo }) => {
   }, [convoMessages]);
 
   return (
-    <div className="flex-grow-1 border border-dark mh-100 position-relative">
+    <div className="flex-grow-1 socket-bg border border-top-0 mh-100 position-relative">
       <div className="calc-height-chat w-100 position-relative overflow-auto">
         <div className="w-100 mh-100 overflow-auto">
           {convoMessages?.map((message, i) => {
@@ -156,7 +156,7 @@ const Socket = ({ currentConvo }) => {
             value={newMessage}
             onChange={(e) => setNewMessage(e.target.value)}
           />
-          <button type="submit" className="btn btn-primary w-25 mb-2 ">
+          <button type="submit" id="bg" className="btn w-25 mb-2 ">
             Send
           </button>
         </form>

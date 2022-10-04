@@ -15,9 +15,9 @@ const Navigation = () => {
   }
 
   return (
-    <nav className="navbar test navbar-expand-lg navbar-light bg-primary py-5">
+    <nav className="navbar test nav-bg border-bottom navbar-expand-lg navbar-light py-5">
       <div className="container-fluid d-flex flex-row-reverse">
-        <a className="navbar-brand text-white w-25 text-center" href="#">
+        <a className="navbar-brand text-black w-25 text-center" href="#">
           Chat-App
         </a>
         <button
@@ -34,7 +34,7 @@ const Navigation = () => {
         <div className="collapse navbar-collapse " id="navbarSupportedContent">
           <ul className="navbar-nav me-auto mb-2 mb-lg-0 d-flex justify-content-end w-25">
             <li className="nav-item ">
-              <a className="nav-link active text-white" aria-current="page" href="#">
+              <a className="nav-link active text-black" aria-current="page" href="#">
                 Home
               </a>
             </li>

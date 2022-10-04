@@ -41,22 +41,22 @@ const Home = () => {
   }, []);
 
   return (
-    <div className="d-flex w-100 calc-height ">
+    <div className="d-flex w-100 convo-cont-bg calc-height ">
       <div className="w-25">
         {userConvos?.map((convo, idx) => {
           return (
-            <div className="card" onClick={() => setCurrConvo(convo)} key={idx}>
-              <div className="card-body p-5 text-center conv-bg  text-dark bg-opacity-25">
+            <div className="border-bottom" onClick={() => setCurrConvo(convo)} key={idx}>
+              <div className="card-body p-5 text-center conv-bg  text-dark ">
                 <Conversation convo={convo} userId={user._id} />
               </div>
             </div>
           );
         })}
         <div className="w-100">
-          <div className="card">
+          <div className="border-bottom">
             <div
               onClick={toggle}
-              className="card-body p-5 text-center conv-bg  text-dark bg-opacity-25"
+              className="card-body border-0 p-5 text-center conv-bg  text-dark bg-opacity-25"
             >
               <BsPlusCircle className="icon-add" />
             </div>

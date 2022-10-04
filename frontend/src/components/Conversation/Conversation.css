@@ -1,9 +1,17 @@
 .icon-delete{
     font-size: 28px;
-    color: white;
+    color: rgb(238, 235, 235);
     cursor: pointer;
 }
 
 .icon-delete:hover{
-    color: black;
+    color: rgb(224, 224, 224);
+}
+
+.friend-col{
+    color: rgb(238, 235, 235);
+}
+
+.friend-col:hover{
+    color: rgb(224, 224, 224);
 }
