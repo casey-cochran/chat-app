@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Route, Routes, useNavigate} from 'react-router-dom';
-import Home from './components/Home/Home.js';
+import Messenger from './components/Messenger/Messenger.js';
 import Login from './components/Login/Login.js';
 import Signup from './components/Signup/Signup.js';
 import Socket from './components/Socket/Socket';
 import { restoreUser } from './store/userSlice.js';
 import Navigation from './components/Navbar/Navbar.js';
+import Home from './components/Home/Home.js';
 
 function App() {
   const dispatch = useDispatch();
@@ -24,12 +25,13 @@ function App() {
 
       <Routes>
         <Route path='/login' element={<Login />} />
-      {user.user && <>
+      {/* {user.user && <> */}
         <Route path='/' element={<Home />} />
+        <Route path='/messenger' element={<Messenger />} />
         <Route path='/signup' element={<Signup />} />
         <Route path='/another/test' element={null} />
         <Route path='/socket' element={<Socket />} />
-        </>}
+        {/* </>} */}
       </Routes>
 
     </div>

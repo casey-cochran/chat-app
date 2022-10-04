@@ -34,7 +34,7 @@ const Navigation = () => {
         <div className="collapse navbar-collapse " id="navbarSupportedContent">
           <ul className="navbar-nav me-auto mb-2 mb-lg-0 d-flex justify-content-end w-25">
             <li className="nav-item ">
-              <a className="nav-link active text-black" aria-current="page" href="#">
+              <a className="nav-link active text-black" onClick={() => navigate('/')} aria-current="page" href="#">
                 Home
               </a>
             </li>
@@ -61,8 +61,8 @@ const Navigation = () => {
                   </a>
                 </li>
                 <li>
-                  <a className="dropdown-item" href="#">
-                    Another action
+                  <a className="dropdown-item" onClick={() => navigate('/messenger')} href="#">
+                    Go to messenger
                   </a>
                 </li>
                 {/* <li><hr className="dropdown-divider"></li> */}
