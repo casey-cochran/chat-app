@@ -12,7 +12,6 @@ router.post('/', asyncHandler(async(req,res) => {
     const {chatRoomId, userId, text, receiverId} = req.body;
     const isChatRoom = await ChatRoom.findOne({_id: chatRoomId})
     if(!isChatRoom) {
-        console.log(isChatRoom, 'hello')
         return res.json({err: "Chat no longer exists"})
     }
     const newMessage = new Message({
