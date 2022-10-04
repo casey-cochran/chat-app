@@ -39,7 +39,8 @@ const conversationSlice = createSlice({
       state.userConvos = action.payload;
     },
     deleteConversation: (state, action) => {
-        state.userConvos = state.userConvos.filter((convo) => convo._id !== action.payload)
+        state.userConvos = state.userConvos.filter((convo) => convo._id !== action.payload);
+        state.currentConversation = null;
     }
   },
   extraReducers: {
@@ -50,6 +51,7 @@ const conversationSlice = createSlice({
         state.status = 'success';
         state.error = null;
         state.userConvos.unshift(action.payload);
+
     },
     [createConversation.rejected]: (state, action) => {
         state.status = 'failed';

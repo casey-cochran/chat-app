@@ -12,9 +12,7 @@ import {
 } from "reactstrap";
 import { useEffect, useState } from "react";
 import { useSelector, dispatch, useDispatch } from "react-redux";
-import {
-  createConversation,
-} from "../../store/conversationSlice.js";
+import { createConversation } from "../../store/conversationSlice.js";
 
 const CreateConvoModal = ({ open, toggle }) => {
   const user = useSelector((state) => state.user?.user);
@@ -24,10 +22,10 @@ const CreateConvoModal = ({ open, toggle }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if(username === user.username) return setError("Please enter another users username")
+    if (username === user.username)
+      return setError("Please enter another users username");
     const newConversation = { username: username, userId: user._id };
     const createConvo = await dispatch(createConversation(newConversation));
-    console.log(createConvo.payload, ' this should be an error frontend')
     if (createConvo.payload?.err) {
       return setError(createConvo.payload.err);
     }

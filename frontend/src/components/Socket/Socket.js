@@ -8,6 +8,7 @@ import "./Socket.css";
 const Socket = ({ currentConvo }) => {
   const user = useSelector((state) => state.user?.user);
   const userConvos = useSelector((state) => state.conversation.userConvos);
+  const currentConversation = useSelector((state) => state.conversation.currentConversation)
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
   const [currentChat, setCurrentChat] = useState(null);
@@ -20,7 +21,7 @@ const Socket = ({ currentConvo }) => {
     (member) => member !== user._id
   );
 
-  console.log(messages, " waht are mesages");
+
   const sendChat = async (e) => {
     e.preventDefault();
     //possible post messages here ?
@@ -94,11 +95,11 @@ const Socket = ({ currentConvo }) => {
 
   useEffect(() => {
     //Need to add receiverId to users when loading a chat so that I can send them messages
-    socket.current.emit("addUser", user._id);
+    socket.current.emit("addUser", user?._id);
     socket.current.on("getUsers", (users) => {
       console.log(users);
     });
-  }, [user._id, userConvos.length]);
+  }, [user?._id, userConvos.length]);
 
   useEffect(() => {
     socket.current.on("recieved", (chat) => {
@@ -156,7 +157,7 @@ const Socket = ({ currentConvo }) => {
             value={newMessage}
             onChange={(e) => setNewMessage(e.target.value)}
           />
-          <button type="submit" id="bg" className="btn w-25 mb-2 ">
+          <button type="submit" id="bg" className="btn w-25 mb-2" disabled={currentConversation ? false: true}>
             Send
           </button>
         </form>

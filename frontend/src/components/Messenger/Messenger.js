@@ -28,7 +28,7 @@ const Messenger = () => {
   useEffect(() => {
     try {
       const getUserConversations = async () => {
-        const conversation = await csrfFetch(`/conversation/${user._id}`);
+        const conversation = await csrfFetch(`/conversation/${user?._id}`);
         const response = await conversation.json();
         const { rooms } = response;
         console.log(rooms ,' where are all my rooms')

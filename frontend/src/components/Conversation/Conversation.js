@@ -33,7 +33,6 @@ const Conversation = ({convo, userId}) => {
         })
         const data = await response.json();
         dispatch(deleteConversation(convo._id))
-        console.log(data)
     }
 
     return(

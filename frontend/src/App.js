@@ -15,7 +15,8 @@ function App() {
   const user = useSelector((state) => state.user)
 
   useEffect(() => {
-     dispatch(restoreUser()).then(() => {if(!user.user) navigate('/login')})
+     dispatch(restoreUser())
+    //  .then(() => {if(!user.user) navigate('/login')})
   }, []);
 
 
